@@ -1,6 +1,7 @@
 package Desktop;
 
 import java.awt.BorderLayout;
+import java.awt.CardLayout;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
@@ -27,14 +28,21 @@ import javax.swing.AbstractListModel;
 import javax.swing.JComboBox;
 import javax.swing.JButton;
 import javax.swing.border.TitledBorder;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 import javax.swing.UIManager;
 
 import java.awt.Color;
 
 import javax.swing.JTable;
 
+import Entidades.Alumno;
 import Entidades.Profesor;
 import Negocio.Controlador;
+
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+import java.util.ArrayList;
 
 public class ComisionDesktop extends JFrame {
 
@@ -44,37 +52,29 @@ public class ComisionDesktop extends JFrame {
 	private JComboBox<Object> cboProfesores;
 	private Controlador contr;
 	private Profesor p;
-
+	private ArrayList<Profesor> lp;
+	
+	
 	/**
 	 * Launch the application.
 	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					ComisionDesktop frame = new ComisionDesktop();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
+	
 
 	/**
 	 * Create the frame.
 	 */
-	public ComisionDesktop() {
-		contr = new Controlador();
+	public ComisionDesktop(Controlador cont, int cod_examen, JLabel estadoComision) {
+		contr = cont;
+		lp= new ArrayList<Profesor>();
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		GridBagLayout gbl_contentPane = new GridBagLayout();
-		gbl_contentPane.columnWidths = new int[]{67, 85, 58, 0, 0, 0, 0, 0, 0};
+		gbl_contentPane.columnWidths = new int[]{67, 85, 58, 0, 0, 0, 0, 0};
 		gbl_contentPane.rowHeights = new int[]{0, 0, 48, 0, 0, 0, 0, 0};
-		gbl_contentPane.columnWeights = new double[]{0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
+		gbl_contentPane.columnWeights = new double[]{0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
 		gbl_contentPane.rowWeights = new double[]{0.0, 0.0, 1.0, 1.0, 1.0, 0.0, 0.0, Double.MIN_VALUE};
 		contentPane.setLayout(gbl_contentPane);
 		
@@ -152,14 +152,6 @@ public class ComisionDesktop extends JFrame {
 				//frame.dispose()
 			}
 		panel.add(cboProfesores, gbc_cboProfesores);
-		
-		JButton btnAgregar = new JButton("Agregar");
-		GridBagConstraints gbc_btnAgregar = new GridBagConstraints();
-		gbc_btnAgregar.insets = new Insets(0, 0, 0, 5);
-		gbc_btnAgregar.gridx = 4;
-		gbc_btnAgregar.gridy = 0;
-		panel.add(btnAgregar, gbc_btnAgregar);
-		
 		JScrollPane scrollPane_1 = new JScrollPane();
 		GridBagConstraints gbc_scrollPane_1 = new GridBagConstraints();
 		gbc_scrollPane_1.gridheight = 3;
@@ -172,6 +164,85 @@ public class ComisionDesktop extends JFrame {
 		
 		tablaProfesores = new JTable();
 		scrollPane_1.setViewportView(tablaProfesores);
+		
+		
+		
+		
+		
+		JButton btnAgregar = new JButton("Agregar");
+		btnAgregar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			
+				int indi=cboProfesores.getSelectedIndex();
+				if(indi!=0)
+				{
+				Profesor pr= new Profesor();
+		        pr= (Profesor)cboProfesores.getSelectedItem();
+		        cboProfesores.removeItem(pr);
+		        lp.add(pr);
+		        
+		        cargarTabla(lp);
+				}else JOptionPane.showMessageDialog(null, "No ha seleccionado ningun elemento");
+			}
+		});
+		GridBagConstraints gbc_btnAgregar = new GridBagConstraints();
+		gbc_btnAgregar.insets = new Insets(0, 0, 0, 5);
+		gbc_btnAgregar.gridx = 4;
+		gbc_btnAgregar.gridy = 0;
+		panel.add(btnAgregar, gbc_btnAgregar);
+		
+		JButton btnCancelar = new JButton("Cancelar");
+		GridBagConstraints gbc_btnCancelar = new GridBagConstraints();
+		gbc_btnCancelar.anchor = GridBagConstraints.EAST;
+		gbc_btnCancelar.insets = new Insets(0, 0, 0, 5);
+		gbc_btnCancelar.gridx = 3;
+		gbc_btnCancelar.gridy = 6;
+		contentPane.add(btnCancelar, gbc_btnCancelar);
+		
+		JButton btnGuardar = new JButton("Guardar");
+		btnGuardar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				TableModel tp=	tablaProfesores.getModel();
+				int cols = tp.getColumnCount(); 
+				int filas = tp.getRowCount();
+				ArrayList<Profesor> profes= new ArrayList<Profesor>();
+				for(int i=0; i<filas; i++) { 
+					Profesor pr = new Profesor();
+				for(int j=0; j<cols; j++){ 
+					switch(j){
+				case 0: pr.setCod_profesor((Integer.parseInt(tp.getValueAt(i,j).toString())));break;
+				case 1: pr.setApellido(tp.getValueAt(i,j).toString());break;
+				case 2: pr.setNombre(tp.getValueAt(i,j).toString()); break;
+				
+					}
+					
+				}
+				profes.add(pr);
+				}
+				try {
+					//llamar al controlador para que agregue el arraylist de profesores
+					int cod_comision = contr.agregarComision(cod_examen, txtNombre.getText().toString(), txtDescripcion.getText().toString());
+					contr.asignarProfesores(profes, cod_comision);
+					estadoComision.setText("Comisión generada");
+					dispose();
+				  
+				} catch (Exception el) {
+					// TODO Auto-generated catch block
+					el.printStackTrace();
+				}
+				
+				}
+		});
+		GridBagConstraints gbc_btnGuardar = new GridBagConstraints();
+		gbc_btnGuardar.anchor = GridBagConstraints.WEST;
+		gbc_btnGuardar.gridwidth = 2;
+		gbc_btnGuardar.insets = new Insets(0, 0, 0, 5);
+		gbc_btnGuardar.gridx = 4;
+		gbc_btnGuardar.gridy = 6;
+		contentPane.add(btnGuardar, gbc_btnGuardar);
+		
+		
 	}
 	
 	public void cargarCombo() throws Exception{
@@ -181,8 +252,15 @@ public class ComisionDesktop extends JFrame {
 		cboProfesores.addItem(p);
 		}
 	
+	
 }
-	
-	
+	public void cargarTabla(ArrayList<Profesor> lp){
+		XTableModelProfesores modelo= new XTableModelProfesores();
+		modelo.setDatasource(lp);
+		tablaProfesores.getTableHeader().setReorderingAllowed(false);
+		tablaProfesores.setModel(modelo);
+		
+		
+	}
 
 }

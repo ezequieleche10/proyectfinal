@@ -22,23 +22,24 @@ public class CatalogodeCarreras  extends DBConexion_1 {
     
     private ResultSet resu;
     
-    public CatalogodeCarreras()
-            {
-                this.Conectar();
-            }
     
     public Carrera buscarCarrera(int cod_carrera) throws Exception
     {
         try 
         {
             
-            getStmt();
-            resu = stmt.executeQuery("SELECT * FROM CARRERA WHERE cod_carrera = '"+cod_carrera+"'");
+            this.Conectar();
+            PreparedStatement cons= Cone.prepareStatement("SELECT * FROM CARRERA WHERE cod_carrera = ?");
+            cons.setInt(1,cod_carrera);
+            resu = cons.executeQuery();
+            resu.first();
             int codCa = resu.getInt("cod_carrera" );
             String nomCa = resu.getString("nombre");
             String desCa = resu.getString("descripcion");
-            Carrera ca = new Carrera(codCa, nomCa, desCa);       
+            Carrera ca = new Carrera(codCa, nomCa, desCa);
+            this.Desconectar();
             return ca;
+            
         }
         catch (Exception ex)
         {
@@ -50,10 +51,10 @@ public class CatalogodeCarreras  extends DBConexion_1 {
      public ArrayList<Carrera> buscarCarreras() throws Exception
     {
         try 
-        {
+        {    this.Conectar();
              ArrayList<Carrera> carreras = new ArrayList<Carrera>();
-            getStmt();
-            resu = stmt.executeQuery("SELECT * FROM CARRERA");
+             PreparedStatement cons= Cone.prepareStatement("SELECT * FROM carrera");
+            resu = cons.executeQuery();
             while(resu.next())
                {
                     int codCa = resu.getInt("cod_carrera" );
@@ -62,6 +63,7 @@ public class CatalogodeCarreras  extends DBConexion_1 {
                     Carrera ca = new Carrera(codCa, nomCa, desCa); 
                     carreras.add(ca); 
                }
+            this.Desconectar();
             return carreras;
         }
         catch (Exception ex)
@@ -74,9 +76,13 @@ public class CatalogodeCarreras  extends DBConexion_1 {
      public void agregarCarrera(String nombre, String descripcion) throws Exception
     {
         try 
-        {
-            getStmt();
-            stmt.executeUpdate("INSERT INTO carrera (cod_carrera, nombre, descripcion) VALUES (NULL,'"+nombre+"','"+descripcion+"')");
+        {   String sqlu="INSERT INTO carrera (nombre, descripcion) VALUES (?,?)";
+            this.Conectar();
+            PreparedStatement upd= Cone.prepareStatement(sqlu);
+            upd.setString(1, nombre);
+            upd.setString(2, descripcion);
+            upd.executeUpdate();
+            this.Desconectar();
         }
         catch (Exception ex)
         {

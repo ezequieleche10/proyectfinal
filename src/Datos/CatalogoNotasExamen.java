@@ -23,10 +23,14 @@ public class CatalogoNotasExamen extends DBConexion_1 {
      public ArrayList<NotaExamenAlumno> listarNotaExamenAlumno(int cod_examen) throws Exception
     {
         try 
-        {
-             ArrayList<NotaExamenAlumno> notasExamenesAlumnos = new ArrayList<NotaExamenAlumno>();
-            getStmt();
-            resu = stmt.executeQuery("SELECT * FROM alumno_en_examen INNER JOIN alumno ON alumno_en_examen.dni=alumno.dni WHERE cod_examen = '"+cod_examen+"'");
+        {    this.Conectar();
+            String cadenaC="SELECT * FROM alumno_en_examen INNER JOIN alumno ON alumno_en_examen.dni=alumno.dni WHERE cod_examen = ?";
+            ArrayList<NotaExamenAlumno> notasExamenesAlumnos = new ArrayList<NotaExamenAlumno>();
+            PreparedStatement consulta= Cone.prepareStatement(cadenaC);
+            consulta.setInt(1, cod_examen);
+            resu= consulta.executeQuery(); 
+            
+         
             while(resu.next())
                {
                     float nota = resu.getFloat("nota");
@@ -41,7 +45,10 @@ public class CatalogoNotasExamen extends DBConexion_1 {
                     NotaExamenAlumno nea= new NotaExamenAlumno(nota,condicion,al);
                     
                     notasExamenesAlumnos.add(nea); 
+                    
                }
+            this.Desconectar();
+            JOptionPane.showMessageDialog(null, "Se han cargado los alumnos al examen");
             return notasExamenesAlumnos;
         }
         catch (Exception ex)
@@ -56,9 +63,9 @@ public class CatalogoNotasExamen extends DBConexion_1 {
     {
         try 
         {
-            
-            /*String insert="INSERT INTO alumno_en_examen(dni,cod_examen,estado,nota)VALUES(?,?,?,?)";
-            PreparedStatement ins= conexion.prepareStatement(insert);
+            this.Conectar();
+            String insert="INSERT INTO alumno_en_examen(dni,cod_examen,estado,nota)VALUES(?,?,?,?)";
+            PreparedStatement ins= Cone.prepareStatement(insert);
             for (int i =0; i<listaNotas.size(); i++)
             {
             int dni = listaNotas.get(i).getAlumno().getDni();
@@ -69,20 +76,9 @@ public class CatalogoNotasExamen extends DBConexion_1 {
             ins.setString(3,estado);
             ins.setFloat(4, nota);
             ins.executeUpdate();
-        	}*/
-    
-        	for (int i =0; i<listaNotas.size(); i++)
-            {
-        		
-        	
-               getStmt();
-               int dni= listaNotas.get(i).getAlumno().getDni();
-               String estado = listaNotas.get(i).getCondicion();
-               float nota = listaNotas.get(i).getNota();
-               stmt.executeUpdate("INSERT INTO alumno_en_examen (dni, cod_examen, estado, nota) VALUES ('"+dni+"','"+cod_examen+"','"+estado+"','"+nota+"')");
-               }
-            
-            JOptionPane.showMessageDialog(null, "Los alumnos se agregaron satisfactoriamente al examen!");
+        	}
+            this.Desconectar();
+        	JOptionPane.showMessageDialog(null, "Los alumnos se agregaron satisfactoriamente al examen!");
             
         }
         catch (Exception ex)

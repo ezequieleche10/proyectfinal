@@ -24,12 +24,13 @@ public class CatalogodeAlumnos extends DBConexion_1{
     private ResultSet resu;
     
     public ArrayList<Alumno> buscarAlumnos() throws Exception
-    {
+    {	
         try 
         {
-             ArrayList<Alumno> alumnos = new ArrayList<Alumno>();
-             getStmt();
-             resu = stmt.executeQuery("SELECT * FROM alumno");
+        	this.Conectar();
+        	ArrayList<Alumno> alumnos = new ArrayList<Alumno>();
+            PreparedStatement consulta= Cone.prepareStatement("SELECT * FROM alumno");
+             resu = consulta.executeQuery();
              while(resu.next())
                {
                     int dniAl = resu.getInt("dni" );
@@ -42,22 +43,25 @@ public class CatalogodeAlumnos extends DBConexion_1{
                     alumnos.add(al); 
                     
                }
+             this.Desconectar();
             return alumnos;
+
         }
         catch (Exception ex)
         {
             System.err.println("SQLException: " + ex.getMessage());
             return null;            
         }
+      
     }
     
     public void agregarAlumnos(ArrayList<Alumno> alumnos) throws Exception
     {
         try 
         {
-        	/*
+        	this.Conectar();
             String insert="INSERT INTO alumno (dni, nombre, apellido, mail, ingreso_directo, turno_eleccion)VALUES(?,?,?,?,?,?)";
-            PreparedStatement ins= conexion.prepareStatement(insert);
+            PreparedStatement ins= Cone.prepareStatement(insert);
             for (int i =0; i<alumnos.size(); i++)
             {
             int dni = alumnos.get(i).getDni();
@@ -75,24 +79,8 @@ public class CatalogodeAlumnos extends DBConexion_1{
             ins.executeUpdate();
             
             
-             }*/
+             }
         	
-        	for (int i =0; i<alumnos.size(); i++)
-            {
-        		
-        	
-               getStmt();
-               int dni= alumnos.get(i).getDni();
-               String n1=alumnos.get(i).getApellido();
-               String n2=alumnos.get(i).getNombre();
-               String n3=alumnos.get(i).getMail();
-               String n4=alumnos.get(i).getIngreso_directo();
-               String n5=alumnos.get(i).getTurno_eleccion();
-               stmt.executeUpdate("INSERT INTO alumno (dni, nombre, apellido, mail, ingreso_directo, turno_eleccion) VALUES ('"+dni+"','"+n2+"','"+n1+"','"+n3+"','"+n4+"','"+n5+"')");
-               
-               
-                
-            }
             
             JOptionPane.showMessageDialog(null, "Los alumnos se agregaron satisfactoriamente!!!");
             this.Desconectar();
@@ -102,6 +90,7 @@ public class CatalogodeAlumnos extends DBConexion_1{
             System.err.println("SQLException: " + ex.getMessage());
                         
         }
+       
     }
     
 }

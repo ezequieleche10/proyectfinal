@@ -8,7 +8,7 @@ import Entidades.Profesor;
 
 public class XTableModelProfesores extends AbstractTableModel {
 
-ArrayList<Profesor> datasource;
+	ArrayList<Profesor> datasource;
 	
 	
 	public ArrayList<Profesor> getDatasource() {
@@ -24,7 +24,7 @@ ArrayList<Profesor> datasource;
 		// TODO Auto-generated method stub
 		return 3;
 	}
-
+    
 	@Override
 	public int getRowCount() {
 		// TODO Auto-generated method stub
@@ -33,6 +33,7 @@ ArrayList<Profesor> datasource;
 
 	@Override
 	public Object getValueAt(int arg0, int arg1) {
+		
 		Profesor prof= datasource.get(arg0);
 		Object o;
 		switch (arg1) {

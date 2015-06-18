@@ -9,6 +9,7 @@ import java.awt.GridBagLayout;
 
 import javax.swing.JLabel;
 
+import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
 
@@ -35,8 +36,9 @@ public class PanelGenerarExamen extends JPanel {
 	private JTextField txtTipoExamen;
 	private JLabel lblEstadoExamen;
 	private JLabel lblCargarEjercicios;
-	private JLabel lblEstadoComision;
+	public JLabel lblEstadoComision;
 	private JLabel lblEstadoLista;
+	private int cod_examen;
 	
 	/**
 	 * Create the panel.
@@ -103,6 +105,7 @@ public class PanelGenerarExamen extends JPanel {
 					cod_carrera=1;
 				}else cod_carrera=2;
 				Examen ex= contr.mostrarExamenPendiente(anio, cod_carrera);
+				cod_examen=ex.getCod_examen();
 				txtTipoExamen.setText(ex.getTipo_examen());
 				lblEstadoExamen.setText("sin generar");
 				lblCargarEjercicios.setText("sin generar");
@@ -230,6 +233,16 @@ public class PanelGenerarExamen extends JPanel {
 		panel_2.setLayout(gbl_panel_2);
 		
 		JButton btnCargarComision = new JButton("Cargar comisi\u00F3n");
+		btnCargarComision.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				ComisionDesktop cd= new ComisionDesktop(contr,cod_examen, lblEstadoComision);
+				cd.setVisible(true);
+				cd.setLocationRelativeTo(null);//la centra
+			    cd.setMinimumSize(new Dimension(500,300));
+				
+			}
+		});
 		GridBagConstraints gbc_btnCargarComision = new GridBagConstraints();
 		gbc_btnCargarComision.insets = new Insets(0, 0, 5, 5);
 		gbc_btnCargarComision.gridx = 2;

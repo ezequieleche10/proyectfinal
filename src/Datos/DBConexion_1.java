@@ -15,30 +15,28 @@ public class DBConexion_1 {
 	String connectionDriver="com.mysql.jdbc.Driver";
     String connectionUser = "root";
 	String connectionPassword = "";
-    protected Connection conexion;
     protected Statement stmt;
-   
+    Connection Cone = null;
+
   
-      public Connection Conectar()
+      public void Conectar()
         {
     	try {
     			Class.forName("com.mysql.jdbc.Driver").newInstance();
-    			Connection conexion = DriverManager.getConnection(connectionUrl,connectionUser,connectionPassword);
-				stmt=conexion.createStatement();
+    			Cone = DriverManager.getConnection(connectionUrl,connectionUser,connectionPassword);
+				
 			
-		} catch (SQLException e) {
-			conexion=null;
-		} catch (Exception e) {
-			conexion=null;
 		}
-		return conexion;
-	    }
+    	catch( Exception e)
+		{
+			e.printStackTrace();
+		} 
+		}
+		
+	    
         
     
-    public DBConexion_1()
-    {
-        this.Conectar();
-    }
+   
     
    // private String getConnectUrl()
     //{
@@ -47,11 +45,14 @@ public class DBConexion_1 {
     
     public void Desconectar () throws SQLException
     {
-        stmt.close();
-        conexion.close();
+     try{  
+        Cone.close();
+    }catch( Exception e)
+	{
+		e.printStackTrace();
+	}
     }
-    
-    public Statement getStmt()
+   public Statement getStmt()
     {
         return this.stmt;
     }

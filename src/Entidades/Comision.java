@@ -42,11 +42,11 @@ public class Comision {
     public String getDescripcion() {
         return descripcion;
     }
-    
+   /* 
     public void agregarComision ()
     {
         CatalogodeComisiones cd = new CatalogodeComisiones();
         cd.agregarComision(this.getCod_comision(), this.getDescripcion(), this.getNombre(), this.getExamen().getCod_examen());
     }
-    
+    */
 }

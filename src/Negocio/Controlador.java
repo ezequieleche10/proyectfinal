@@ -5,6 +5,7 @@
  */
 package Negocio;
 import Datos.CatalogodeAlumnos;
+import Datos.CatalogodeComisiones;
 import Datos.CatalogodeProfesores;
 import Entidades.Alumno;
 import Entidades.Carrera;
@@ -28,12 +29,14 @@ public class Controlador {
     private CatalogodeCarreras cdc;
     private CatalogodeAlumnos cda;
     private CatalogodeProfesores cdp;
+    private CatalogodeComisiones cdco;
     
     public Controlador() {
         cde = new CatalogodeExamenes();
         cdc = new CatalogodeCarreras();
         cda = new CatalogodeAlumnos();
         cdp= new CatalogodeProfesores();
+        cdco = new CatalogodeComisiones();
         }
     
      public ArrayList<Carrera> buscarCarreras() throws Exception{
@@ -107,10 +110,15 @@ public class Controlador {
         
     }
     
-    public void asignarProfesor (Profesor profe, Comision comi) throws Exception
+    public void asignarProfesores (ArrayList<Profesor> profes, int cod_comision) throws Exception
     {
-      profe.AgregarComision(comi);
+      cdp.agregaraComision(profes, cod_comision);
        
+    }
+    
+    public int agregarComision (int cod_examen, String nombre, String descripcion)
+    {
+    	return cdco.agregarComision(nombre, descripcion, cod_examen);
     }
         
     
@@ -159,6 +167,7 @@ public class Controlador {
     {
     	Examen ex = cde.buscaExamen(cod_examen);
     	ex.agregarAlumnos(alumnos);
+    	cde.cambiarEstado(ex.getCod_examen(), "alumnos cargados");
     	
     }
     

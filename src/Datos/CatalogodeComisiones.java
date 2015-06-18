@@ -6,7 +6,6 @@
 package Datos;
 
 import java.sql.*;
-import java.sql.PreparedStatement;
 
 
 
@@ -15,25 +14,39 @@ import java.sql.PreparedStatement;
  * @author Lucia
  */
 public class CatalogodeComisiones extends DBConexion_1{
+	
+	 private ResultSet resu;
     
-   public void agregarComision (int cod_comision, String nombre, String descripcion, int cod_examen)
+   public int agregarComision (String nombre, String descripcion, int cod_examen)
    {
+	  
        try 
         {
-            Connection conn=this.Conectar();
-            String insert="INSERT INTO comision (cod_examen, cod_comision, nombre, descripcion)VALUES(?,?,?,?)";
-            PreparedStatement ins= conn.prepareStatement(insert);
+            this.Conectar();
+            String insert="INSERT INTO comision (cod_examen, nombre, descripcion)VALUES(?,?,?)";
+            PreparedStatement ins= Cone.prepareStatement(insert);
             ins.setInt(1,cod_examen);
-            ins.setInt(2,cod_comision );
-            ins.setString(3,nombre);
-            ins.setString(4, descripcion);
+            ins.setString(2,nombre);
+            ins.setString(3, descripcion);
             ins.executeUpdate();
+            String cons="SELECT MAX(cod_comision) as cod_comision from comision";
+            PreparedStatement consul = Cone.prepareStatement(cons);
+            resu = consul.executeQuery();
+            resu.first();
+            int codCo = resu.getInt("cod_comision" );
+            this.Desconectar();
+            return codCo;
+            
         }
         catch (Exception ex)
         {
             System.err.println("SQLException: " + ex.getMessage());
+            return 0;
+            
                         
         }
+       
+       
    }
     
 }

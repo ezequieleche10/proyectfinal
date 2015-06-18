@@ -24,6 +24,8 @@ public class Profesor {
     private String fecha_nac;
     private List<Comision> comisiones;
 
+    public Profesor(){}
+    
     public Profesor(int cod_profesor, String nombre, String apellido) {
         this.cod_profesor = cod_profesor;
         this.nombre = nombre;
@@ -37,9 +39,35 @@ public class Profesor {
         this.contrasenia=contrasenia;
     }
     
-    
+    public void setCod_profesor(int cod_profesor){
+    	this.cod_profesor=cod_profesor;
+    }
 
-    public int getCod_profesor() {
+    public void setNombre(String nombre) {
+		this.nombre = nombre;
+	}
+
+	public void setApellido(String apellido) {
+		this.apellido = apellido;
+	}
+
+	public void setUsuario(String usuario) {
+		this.usuario = usuario;
+	}
+
+	public void setContrasenia(String contrasenia) {
+		this.contrasenia = contrasenia;
+	}
+
+	public void setFecha_nac(String fecha_nac) {
+		this.fecha_nac = fecha_nac;
+	}
+
+	public void setComisiones(List<Comision> comisiones) {
+		this.comisiones = comisiones;
+	}
+
+	public int getCod_profesor() {
         return cod_profesor;
     }
 
@@ -67,12 +95,13 @@ public class Profesor {
         return comisiones;
     }
     
-    public void AgregarComision (Comision c) throws Exception {
+   /* public void AgregarComision (Comision c) throws Exception {
         
        CatalogodeProfesores pd = new CatalogodeProfesores();
        pd.agregarProfesorEnComision(this.getCod_profesor(),c.getCod_comision());
         
     }
+    */
     public void AgregarProfesor() throws Exception{
     	CatalogodeProfesores prof= new CatalogodeProfesores();
     	prof.agregarProfesor(this.getNombre(),this.getApellido(),this.getFecha_nac(),this.usuario,this.contrasenia);
