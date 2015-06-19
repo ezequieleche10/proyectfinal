@@ -170,5 +170,11 @@ public class Controlador {
     	cde.cambiarEstado(ex.getCod_examen(), "alumnos cargados");
     	
     }
+
+	public ArrayList<Alumno> getAlumnosenExamen(int cod_examen) {
+		
+		return cde.getAllAlumnos(cod_examen);
+		
+	}
     
 }

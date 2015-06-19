@@ -5,9 +5,11 @@
  */
 package Datos;
 import Datos.DBConexion_1;
+import Entidades.Alumno;
 import Entidades.Carrera;
 import Entidades.Examen;
 
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 
@@ -150,5 +152,39 @@ public class CatalogodeExamenes extends DBConexion_1{
         
           
       }
+
+	public ArrayList<Alumno> getAllAlumnos(int cod_examen) {
+		// TODO Auto-generated method stub
+		 try
+		 {
+	        	this.Conectar();
+	        	ArrayList<Alumno> alumnos = new ArrayList<Alumno>();
+	        	String cons="SELECT * FROM alumno_en_examen INNER JOIN alumno ON alumno_en_examen.dni=alumno.dni WHERE cod_examen = ?";
+	        	
+	            PreparedStatement consulta= Cone.prepareStatement(cons);
+	            consulta.setInt(1, cod_examen);
+	             resu = consulta.executeQuery();
+	             while(resu.next())
+	               {
+	                    int dniAl = resu.getInt("dni" );
+	                    String nomAl = resu.getString("nombre");
+	                    String apeAl = resu.getString("apellido");
+	                    String mailAl = resu.getString("mail");
+	                    String ingdiAl = resu.getString("ingreso_directo");
+	                    String tuelAl = resu.getString("turno_eleccion");
+	                    Alumno al = new Alumno(dniAl, nomAl, apeAl, mailAl, tuelAl, ingdiAl); 
+	                    alumnos.add(al); 
+	                    
+	               }
+	             this.Desconectar();
+	            return alumnos;
+
+	        }
+	        catch (Exception ex)
+	        {
+	            System.err.println("SQLException: " + ex.getMessage());
+	            return null;            
+	        }
+		}
     
 }

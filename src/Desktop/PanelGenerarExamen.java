@@ -193,6 +193,15 @@ public class PanelGenerarExamen extends JPanel {
 		panel_1.setLayout(gbl_panel_1);
 		
 		JButton btnListaDeAlumnos = new JButton("Lista de alumnos");
+		btnListaDeAlumnos.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				AlumnosDesktop ad= new AlumnosDesktop(contr,cod_examen);
+				ad.setVisible(true);
+				ad.setLocationRelativeTo(null);//la centra
+			    ad.setMinimumSize(new Dimension(500,300));
+			   // ad.setMaximumSize(new Dimension(800,800));
+			}
+		});
 		GridBagConstraints gbc_btnListaDeAlumnos = new GridBagConstraints();
 		gbc_btnListaDeAlumnos.gridwidth = 3;
 		gbc_btnListaDeAlumnos.insets = new Insets(0, 0, 5, 0);

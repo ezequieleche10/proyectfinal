@@ -22,7 +22,12 @@ ArrayList<Alumno> datasource;
 	public void setDatasource(ArrayList<Alumno> datasource) {
 		this.datasource = datasource;
 	}
-
+	
+	@Override
+	public boolean isCellEditable(int row, int column) {
+	    return true;
+	}
+	
 	@Override
 	public int getColumnCount() {
 		// TODO Auto-generated method stub
