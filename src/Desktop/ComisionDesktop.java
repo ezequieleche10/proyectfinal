@@ -224,7 +224,7 @@ public class ComisionDesktop extends JFrame {
 					//llamar al controlador para que agregue el arraylist de profesores
 					int cod_comision = contr.agregarComision(cod_examen, txtNombre.getText().toString(), txtDescripcion.getText().toString());
 					contr.asignarProfesores(profes, cod_comision);
-					estadoComision.setText("Comisión generada");
+					estadoComision.setText("Comision generada");
 					dispose();
 				  
 				} catch (Exception el) {

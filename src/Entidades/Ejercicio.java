@@ -17,17 +17,21 @@ public class Ejercicio {
     private String nombre;
     private String descripcion;
     private int cant_items;
-    private float porcentaje;
+    private int porcentaje;
     private List<AlumnoEnEjericio> listaAlumnos;
 
-    public Ejercicio(String nombre, String descripcion, int cant_items, float porcentaje) {
+    public Ejercicio(String nombre, String descripcion, int cant_items, int porcentaje) {
         this.nombre = nombre;
         this.descripcion = descripcion;
         this.cant_items = cant_items;
         this.porcentaje = porcentaje;
     }
 
-    public int getCod_ejercicio() {
+    public Ejercicio() {
+		// TODO Auto-generated constructor stub
+	}
+
+	public int getCod_ejercicio() {
         return cod_ejercicio;
     }
 
@@ -43,7 +47,7 @@ public class Ejercicio {
         return cant_items;
     }
 
-    public float getPorcentaje() {
+    public int getPorcentaje() {
         return porcentaje;
     }
 
@@ -64,6 +68,22 @@ public class Ejercicio {
    public void cargarNota (Alumno alumno, int resultado){
         
     }
+
+public void setNombre(String nombre) {
+	this.nombre = nombre;
+}
+
+public void setDescripcion(String descripcion) {
+	this.descripcion = descripcion;
+}
+
+public void setCant_items(int cant_items) {
+	this.cant_items = cant_items;
+}
+
+public void setPorcentaje(int porcentaje) {
+	this.porcentaje = porcentaje;
+}
     
     
 }

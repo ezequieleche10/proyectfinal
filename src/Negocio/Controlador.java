@@ -6,10 +6,12 @@
 package Negocio;
 import Datos.CatalogodeAlumnos;
 import Datos.CatalogodeComisiones;
+import Datos.CatalogodeEjercicios;
 import Datos.CatalogodeProfesores;
 import Entidades.Alumno;
 import Entidades.Carrera;
 import Entidades.Comision;
+import Entidades.Ejercicio;
 import Entidades.Examen;
 import Entidades.Profesor;
 import Datos.CatalogodeCarreras;
@@ -30,6 +32,7 @@ public class Controlador {
     private CatalogodeAlumnos cda;
     private CatalogodeProfesores cdp;
     private CatalogodeComisiones cdco;
+    private CatalogodeEjercicios cdej;
     
     public Controlador() {
         cde = new CatalogodeExamenes();
@@ -37,6 +40,7 @@ public class Controlador {
         cda = new CatalogodeAlumnos();
         cdp= new CatalogodeProfesores();
         cdco = new CatalogodeComisiones();
+        cdej = new CatalogodeEjercicios();
         }
     
      public ArrayList<Carrera> buscarCarreras() throws Exception{
@@ -122,11 +126,10 @@ public class Controlador {
     }
         
     
-    public void agregarEjercicio (int cod_examen, String nombre, String descripcion, int cant_item, float porcentaje) throws Exception{
-        
-        Examen exa = new Examen();
-        exa = cde.buscaExamen(cod_examen);
-        exa.agregarEjercicio(nombre, descripcion, cant_item, porcentaje);
+    public void agregarEjercicios (ArrayList<Ejercicio> ejercicios, int cod_examen) throws Exception{
+     
+    	cdej.agregarEjercicios(ejercicios,cod_examen);
+       
         
         
     }
@@ -175,6 +178,19 @@ public class Controlador {
 		
 		return cde.getAllAlumnos(cod_examen);
 		
+	}
+	
+	public void cambiarEstadoExamen (int cod_examen, String estado) throws Exception
+	{
+		cde.cambiarEstado(cod_examen, estado);
+	}
+
+	public int[] validarComisionyEjercicio(int cod_examen) {
+		int[] valores;
+		valores= new int[2];
+		valores[0]=cdco.buscarComision(cod_examen);
+		valores[1]=cdej.buscarEjercicio(cod_examen);
+		return valores;
 	}
     
 }

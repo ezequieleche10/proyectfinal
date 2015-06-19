@@ -35,16 +35,19 @@ public class PanelGenerarExamen extends JPanel {
 	Controlador contr;
 	private JTextField txtTipoExamen;
 	private JLabel lblEstadoExamen;
-	private JLabel lblCargarEjercicios;
+	private JLabel lblEstadoEjercicios;
 	public JLabel lblEstadoComision;
 	private JLabel lblEstadoLista;
 	private int cod_examen;
+	private String mensaje;
 	
 	/**
 	 * Create the panel.
 	 */
 	public PanelGenerarExamen(Controlador cont,JPanel panelPpal) {
 		contr=cont;
+		
+		
 		GridBagLayout gridBagLayout = new GridBagLayout();
 		gridBagLayout.columnWidths = new int[]{0, 38, 146, 0, 0, 0, 0, 0, 0, 0, 0};
 		gridBagLayout.rowHeights = new int[]{0, 0, 0, 0, 48, 0, 0, 0, 0, 0, 0, 0};
@@ -107,11 +110,10 @@ public class PanelGenerarExamen extends JPanel {
 				Examen ex= contr.mostrarExamenPendiente(anio, cod_carrera);
 				cod_examen=ex.getCod_examen();
 				txtTipoExamen.setText(ex.getTipo_examen());
-				lblEstadoExamen.setText("sin generar");
-				lblCargarEjercicios.setText("sin generar");
-				lblEstadoComision.setText("sin generar");
 				String estadoLista = ex.getEstado();
 				lblEstadoLista.setText(estadoLista);
+				validarComisionyEjercicio(cod_examen);
+				
 				
 				
 				
@@ -291,6 +293,14 @@ public class PanelGenerarExamen extends JPanel {
 		panel_3.setLayout(gbl_panel_3);
 		
 		JButton btnCargarEjercicios = new JButton("Cargar Ejercicios");
+		btnCargarEjercicios.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				EjerciciosDesktop ed= new EjerciciosDesktop(contr,cod_examen, lblEstadoEjercicios);
+				ed.setVisible(true);
+				ed.setLocationRelativeTo(null);//la centra
+			    ed.setMinimumSize(new Dimension(500,300));
+			}
+		});
 		GridBagConstraints gbc_btnCargarEjercicios = new GridBagConstraints();
 		gbc_btnCargarEjercicios.insets = new Insets(0, 0, 5, 5);
 		gbc_btnCargarEjercicios.gridx = 2;
@@ -304,13 +314,13 @@ public class PanelGenerarExamen extends JPanel {
 		gbc_lblEstado_3.gridy = 1;
 		panel_3.add(lblEstado_3, gbc_lblEstado_3);
 		
-		lblCargarEjercicios = new JLabel("El estado");
-		lblCargarEjercicios.setFont(new Font("Arial", Font.BOLD | Font.ITALIC, 12));
-		GridBagConstraints gbc_lblCargarEjercicios = new GridBagConstraints();
-		gbc_lblCargarEjercicios.insets = new Insets(0, 0, 0, 5);
-		gbc_lblCargarEjercicios.gridx = 2;
-		gbc_lblCargarEjercicios.gridy = 1;
-		panel_3.add(lblCargarEjercicios, gbc_lblCargarEjercicios);
+		lblEstadoEjercicios = new JLabel("El estado");
+		lblEstadoEjercicios.setFont(new Font("Arial", Font.BOLD | Font.ITALIC, 12));
+		GridBagConstraints gbc_lblEstadoEjercicios = new GridBagConstraints();
+		gbc_lblEstadoEjercicios.insets = new Insets(0, 0, 0, 5);
+		gbc_lblEstadoEjercicios.gridx = 2;
+		gbc_lblEstadoEjercicios.gridy = 1;
+		panel_3.add(lblEstadoEjercicios, gbc_lblEstadoEjercicios);
 		
 		JButton btnCancelar = new JButton("Cancelar");
 		btnCancelar.addActionListener(new ActionListener() {
@@ -328,6 +338,34 @@ public class PanelGenerarExamen extends JPanel {
 		add(btnCancelar, gbc_btnCancelar);
 		
 		JButton btnGuardar = new JButton("Guardar");
+		btnGuardar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				mensaje="";
+				
+				if (validar())
+				{
+					int resp = JOptionPane.showConfirmDialog(null, "¿Estas seguro de generar el examen?");
+					if (JOptionPane.OK_OPTION==resp)
+					{
+						
+							try {
+								contr.cambiarEstadoExamen(cod_examen, "generado");
+								removeAll();
+								repaint();
+							} catch (Exception e1) {
+								// TODO Auto-generated catch block
+								e1.printStackTrace();
+							}
+						
+					}
+				}
+				else
+				{
+					JOptionPane.showMessageDialog(null, mensaje, "Error", JOptionPane.ERROR_MESSAGE);
+				}
+				
+			}
+		});
 		GridBagConstraints gbc_btnGuardar = new GridBagConstraints();
 		gbc_btnGuardar.anchor = GridBagConstraints.WEST;
 		gbc_btnGuardar.gridwidth = 2;
@@ -347,5 +385,32 @@ public class PanelGenerarExamen extends JPanel {
 		}
 	
 }
+	
+	public boolean validar()
+	{
+		boolean e = true;
+		if (!lblEstadoEjercicios.getText().toString().equals("Ejercicios cargados"))
+				mensaje+="Debe cargar ejercicios \n";
+		if (!lblEstadoComision.getText().toString().equals("Comision generada"))
+			mensaje+="Debe generar comision \n";
+		if(!lblEstadoLista.getText().toString().equals("alumnos cargados"))
+			mensaje+="Debe cargar la lista de alumnos \n";
+		if(!mensaje.equals(""))
+			e=false;
+		return e;
+	}
+	public void validarComisionyEjercicio(int cod_examen){
+	  int[] valores=contr.validarComisionyEjercicio(cod_examen);
+	  
+	  lblEstadoExamen.setText("sin generar");
+	  if(valores[0]!=0){
+		  lblEstadoComision.setText("Comision generada");
+	  }else lblEstadoComision.setText("sin generar");
+		
+		
+	  if(valores[1]!=0){
+		  lblEstadoEjercicios.setText("Ejercicios cargados");
+	  }else lblEstadoEjercicios.setText("sin generar");
+	}
 
 }

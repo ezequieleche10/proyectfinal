@@ -142,6 +142,7 @@ public class CatalogodeExamenes extends DBConexion_1{
          	  upd.setString(1, estado);
          	  upd.setInt(2, cod_examen);
               upd.executeUpdate();    
+              JOptionPane.showMessageDialog(null, "El examen ha sido"+estado, "Informacion", JOptionPane.INFORMATION_MESSAGE);
               this.Desconectar();
          }
          catch (Exception ex)

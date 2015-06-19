@@ -62,7 +62,7 @@ public class CatalogoNotasExamen extends DBConexion_1 {
       public void agregarAlumnos(ArrayList<NotaExamenAlumno> listaNotas, int cod_examen) throws Exception
     {
         try 
-        {
+        {   
             this.Conectar();
             String insert="INSERT INTO alumno_en_examen(dni,cod_examen,estado,nota)VALUES(?,?,?,?)";
             PreparedStatement ins= Cone.prepareStatement(insert);
@@ -76,9 +76,11 @@ public class CatalogoNotasExamen extends DBConexion_1 {
             ins.setString(3,estado);
             ins.setFloat(4, nota);
             ins.executeUpdate();
+            
         	}
+            JOptionPane.showMessageDialog(null, "Los alumnos se agregaron satisfactoriamente al examen!");
             this.Desconectar();
-        	JOptionPane.showMessageDialog(null, "Los alumnos se agregaron satisfactoriamente al examen!");
+        	
             
         }
         catch (Exception ex)

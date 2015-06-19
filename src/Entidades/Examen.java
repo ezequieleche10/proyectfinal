@@ -100,14 +100,7 @@ public class Examen {
        
     }
     
-    public void agregarEjercicio(String nombre, String descripcion, int cant_item, float porcentaje) throws Exception {
-        
-        Ejercicio ej = new Ejercicio(nombre, descripcion, cant_item, porcentaje);
-        CatalogodeEjercicios ejData = new CatalogodeEjercicios();
-        ejData.agregarEjercicio(this.getCod_examen(), ej);
-        
-       
-    }
+    
     
     public ArrayList<Alumno> obtenerAlumnos() throws Exception {
         ArrayList<Alumno> alAprob = new ArrayList<Alumno>();

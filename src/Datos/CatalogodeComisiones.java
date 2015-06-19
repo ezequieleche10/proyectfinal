@@ -29,6 +29,18 @@ public class CatalogodeComisiones extends DBConexion_1{
             ins.setString(2,nombre);
             ins.setString(3, descripcion);
             ins.executeUpdate();
+            this.Desconectar();
+        }
+        catch (Exception ex)
+            {
+                System.err.println("SQLException: " + ex.getMessage());
+                return 0;
+                
+                            
+            }
+        try{
+            
+            this.Conectar();
             String cons="SELECT MAX(cod_comision) as cod_comision from comision";
             PreparedStatement consul = Cone.prepareStatement(cons);
             resu = consul.executeQuery();
@@ -48,5 +60,25 @@ public class CatalogodeComisiones extends DBConexion_1{
        
        
    }
+
+public int buscarComision(int cod_examen) {
+	    
+	    try {
+	    	this.Conectar();
+		    String consulta="SELECT COUNT(cod_comision) as cantidad FROM comision where cod_examen=?";
+		    
+			PreparedStatement cons= Cone.prepareStatement(consulta);
+			cons.setInt(1, cod_examen);
+			resu=cons.executeQuery();
+			resu.first();
+		    int canti = resu.getInt("cantidad" );
+		    return canti;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return 0;
+		}
+	    
+}
     
 }
