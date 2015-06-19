@@ -8,7 +8,7 @@ import javax.swing.table.AbstractTableModel;
 
 import Entidades.Alumno;
 
-
+//lucas  
 
 public class XTableModelAlumnos extends AbstractTableModel {
 
