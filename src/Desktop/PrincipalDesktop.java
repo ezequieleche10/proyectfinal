@@ -13,8 +13,7 @@ import javax.swing.JLabel;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JMenu;
-import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
+
 
 import Negocio.Controlador;
 
@@ -35,35 +34,10 @@ public class PrincipalDesktop extends JFrame {
 	private static Controlador cont;
 
 	
-	
-	/**
-	 * Launch the application.
-	 * @throws UnsupportedLookAndFeelException 
-	 * @throws IllegalAccessException 
-	 * @throws InstantiationException 
-	 * @throws ClassNotFoundException 
-	 */
-	public static void main(String[] args) throws ClassNotFoundException, InstantiationException, IllegalAccessException, UnsupportedLookAndFeelException {
-		UIManager.setLookAndFeel("com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel");
 
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {cont= new Controlador();
-					PrincipalDesktop frame = new PrincipalDesktop();
-					frame.setVisible(true);
-					frame.setExtendedState(MAXIMIZED_BOTH); //inicia maximizada
-				
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
-	/**
-	 * Create the frame.
-	 */
+	 
 	public PrincipalDesktop() {
+		cont= new Controlador();
 		setTitle("Bienvenidos Instituto Olga Cossettini");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
@@ -177,5 +151,13 @@ public class PrincipalDesktop extends JFrame {
 			}
 		});
 		mnArchivo.add(mntmListarAlumnos);
+		
+		JMenuItem mnuCerrar = new JMenuItem("Cerrar");
+		mnuCerrar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				dispose();
+			}
+		});
+		mnArchivo.add(mnuCerrar);
 	}
 }

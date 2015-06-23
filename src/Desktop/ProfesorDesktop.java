@@ -64,7 +64,8 @@ public class ProfesorDesktop extends JFrame {
 	 */
 	public ProfesorDesktop(Controlador cont) {
 		setTitle("Profesores");
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		//al cancelar o cerrar con la x , solo se cierra el JFrame
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 690, 244);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));

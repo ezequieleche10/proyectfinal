@@ -5,31 +5,51 @@ import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.border.EmptyBorder;
+
 import java.awt.GridBagLayout;
+
 import javax.swing.JLabel;
+
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
+
 import javax.swing.JTextField;
 import javax.swing.JButton;
+
+import Negocio.Controlador;
+
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
-public class MainWindow extends JFrame {
+public class LoginDesktop extends JFrame {
 
 	private JPanel contentPane;
 	private JTextField txtClave;
 	private JTextField txtUsuario;
 
+	
 	/**
 	 * Launch the application.
+	 * @throws UnsupportedLookAndFeelException 
+	 * @throws IllegalAccessException 
+	 * @throws InstantiationException 
+	 * @throws ClassNotFoundException 
 	 */
-	public static void main(String[] args) {
+	public static void main(String[] args) throws ClassNotFoundException, InstantiationException, IllegalAccessException, UnsupportedLookAndFeelException {
+		UIManager.setLookAndFeel("com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel");
+
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					MainWindow frame = new MainWindow();
-					frame.setVisible(true);
+					 LoginDesktop frame= new LoginDesktop();
+					 frame.setVisible(true);
+				     frame.setLocationRelativeTo(null);//la centra
+				 
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -37,10 +57,12 @@ public class MainWindow extends JFrame {
 		});
 	}
 
-	/**
-	 * Create the frame.
-	 */
-	public MainWindow() {
+	
+
+	
+	
+	
+	public LoginDesktop() {
 		setTitle("Cossetini Ingreso");
 		setForeground(Color.WHITE);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -115,6 +137,19 @@ public class MainWindow extends JFrame {
 		contentPane.add(btnCancelar, gbc_btnCancelar);
 		
 		JButton btnIngresar = new JButton("Ingresar");
+		btnIngresar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				//Debe validar usuario y contraseña, de ser correcta abre la Pantalla principal
+				//como a continuacion y le manda el codigo del usuario, de lo que es
+				//tener en cuenta que el profesor tiene acceso solo a cargar notas y ver border cases.
+				PrincipalDesktop pd = new PrincipalDesktop();
+				pd.setVisible(true);
+				pd.setExtendedState(MAXIMIZED_BOTH); //inicia maximizada
+				dispose();
+				
+			}
+		});
 		GridBagConstraints gbc_btnIngresar = new GridBagConstraints();
 		gbc_btnIngresar.fill = GridBagConstraints.HORIZONTAL;
 		gbc_btnIngresar.insets = new Insets(0, 0, 5, 5);

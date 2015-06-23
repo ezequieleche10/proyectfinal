@@ -9,6 +9,7 @@ import java.awt.GridBagLayout;
 
 import javax.swing.JLabel;
 
+import java.awt.CardLayout;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
@@ -49,9 +50,9 @@ public class PanelGenerarExamen extends JPanel {
 		
 		
 		GridBagLayout gridBagLayout = new GridBagLayout();
-		gridBagLayout.columnWidths = new int[]{0, 38, 146, 0, 0, 0, 0, 0, 0, 0, 0};
+		gridBagLayout.columnWidths = new int[]{0, 38, 146, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 		gridBagLayout.rowHeights = new int[]{0, 0, 0, 0, 48, 0, 0, 0, 0, 0, 0, 0};
-		gridBagLayout.columnWeights = new double[]{0.1, 0.0, 0.0, 0.1, 1.0, 0.1, 0.1, 0.1, 0.1, 0.1, Double.MIN_VALUE};
+		gridBagLayout.columnWeights = new double[]{0.1, 1.0, 0.0, 0.1, 1.0, 0.1, 0.1, 0.1, 0.1, 0.0, 0.1, Double.MIN_VALUE};
 		gridBagLayout.rowWeights = new double[]{0.1, 0.1, 0.0, 1.0, 1.0, 0.1, 1.0, 1.0, 0.0, 0.0, 0.1, Double.MIN_VALUE};
 		setLayout(gridBagLayout);
 		
@@ -138,9 +139,9 @@ public class PanelGenerarExamen extends JPanel {
 		gbc_panel.gridy = 3;
 		add(panel, gbc_panel);
 		GridBagLayout gbl_panel = new GridBagLayout();
-		gbl_panel.columnWidths = new int[]{0, 0, 102, 0, 0};
+		gbl_panel.columnWidths = new int[]{0, 0, 102, 0, 0, 0};
 		gbl_panel.rowHeights = new int[]{0, 0, 0};
-		gbl_panel.columnWeights = new double[]{0.0, 0.0, 0.0, 1.0, Double.MIN_VALUE};
+		gbl_panel.columnWeights = new double[]{0.0, 0.0, 1.0, 0.0, 1.0, Double.MIN_VALUE};
 		gbl_panel.rowWeights = new double[]{0.0, 0.0, Double.MIN_VALUE};
 		panel.setLayout(gbl_panel);
 		
@@ -181,7 +182,7 @@ public class PanelGenerarExamen extends JPanel {
 		panel_1.setBorder(new TitledBorder(null, "Alumnos en condiciones", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		GridBagConstraints gbc_panel_1 = new GridBagConstraints();
 		gbc_panel_1.gridheight = 2;
-		gbc_panel_1.gridwidth = 4;
+		gbc_panel_1.gridwidth = 5;
 		gbc_panel_1.insets = new Insets(0, 0, 5, 5);
 		gbc_panel_1.fill = GridBagConstraints.BOTH;
 		gbc_panel_1.gridx = 4;
@@ -190,7 +191,7 @@ public class PanelGenerarExamen extends JPanel {
 		GridBagLayout gbl_panel_1 = new GridBagLayout();
 		gbl_panel_1.columnWidths = new int[]{0, 0, 0, 0, 0, 0};
 		gbl_panel_1.rowHeights = new int[]{0, 0, 0};
-		gbl_panel_1.columnWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
+		gbl_panel_1.columnWeights = new double[]{0.0, 0.0, 1.0, 0.0, 0.0, Double.MIN_VALUE};
 		gbl_panel_1.rowWeights = new double[]{0.0, 0.0, Double.MIN_VALUE};
 		panel_1.setLayout(gbl_panel_1);
 		
@@ -239,7 +240,7 @@ public class PanelGenerarExamen extends JPanel {
 		GridBagLayout gbl_panel_2 = new GridBagLayout();
 		gbl_panel_2.columnWidths = new int[]{0, 0, 0, 0, 0};
 		gbl_panel_2.rowHeights = new int[]{0, 0, 0};
-		gbl_panel_2.columnWeights = new double[]{0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
+		gbl_panel_2.columnWeights = new double[]{0.0, 0.0, 1.0, 0.0, Double.MIN_VALUE};
 		gbl_panel_2.rowWeights = new double[]{0.0, 0.0, Double.MIN_VALUE};
 		panel_2.setLayout(gbl_panel_2);
 		
@@ -279,7 +280,7 @@ public class PanelGenerarExamen extends JPanel {
 		panel_3.setBorder(new TitledBorder(null, "Ejercicios", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		GridBagConstraints gbc_panel_3 = new GridBagConstraints();
 		gbc_panel_3.gridheight = 4;
-		gbc_panel_3.gridwidth = 4;
+		gbc_panel_3.gridwidth = 5;
 		gbc_panel_3.insets = new Insets(0, 0, 5, 5);
 		gbc_panel_3.fill = GridBagConstraints.BOTH;
 		gbc_panel_3.gridx = 4;
@@ -288,7 +289,7 @@ public class PanelGenerarExamen extends JPanel {
 		GridBagLayout gbl_panel_3 = new GridBagLayout();
 		gbl_panel_3.columnWidths = new int[]{0, 0, 0, 0, 0};
 		gbl_panel_3.rowHeights = new int[]{0, 0, 0};
-		gbl_panel_3.columnWeights = new double[]{0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
+		gbl_panel_3.columnWeights = new double[]{0.0, 0.0, 1.0, 0.0, Double.MIN_VALUE};
 		gbl_panel_3.rowWeights = new double[]{0.0, 0.0, Double.MIN_VALUE};
 		panel_3.setLayout(gbl_panel_3);
 		
@@ -325,9 +326,12 @@ public class PanelGenerarExamen extends JPanel {
 		JButton btnCancelar = new JButton("Cancelar");
 		btnCancelar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				removeAll();
-				repaint();
+				
+				CardLayout cl = (CardLayout)(panelPpal.getLayout());
+			      cl.show(panelPpal, "Panel por defecto");
 			}
+
+			
 		});
 		GridBagConstraints gbc_btnCancelar = new GridBagConstraints();
 		gbc_btnCancelar.anchor = GridBagConstraints.EAST;
@@ -350,10 +354,11 @@ public class PanelGenerarExamen extends JPanel {
 						
 							try {
 								contr.cambiarEstadoExamen(cod_examen, "generado");
-								removeAll();
-								repaint();
+								CardLayout cl = (CardLayout)(panelPpal.getLayout());
+							      cl.show(panelPpal, "Panel por defecto");
+								
 							} catch (Exception e1) {
-								// TODO Auto-generated catch block
+							
 								e1.printStackTrace();
 							}
 						
@@ -368,7 +373,7 @@ public class PanelGenerarExamen extends JPanel {
 		});
 		GridBagConstraints gbc_btnGuardar = new GridBagConstraints();
 		gbc_btnGuardar.anchor = GridBagConstraints.WEST;
-		gbc_btnGuardar.gridwidth = 2;
+		gbc_btnGuardar.gridwidth = 3;
 		gbc_btnGuardar.insets = new Insets(0, 0, 5, 0);
 		gbc_btnGuardar.gridx = 8;
 		gbc_btnGuardar.gridy = 9;
@@ -412,5 +417,6 @@ public class PanelGenerarExamen extends JPanel {
 		  lblEstadoEjercicios.setText("Ejercicios cargados");
 	  }else lblEstadoEjercicios.setText("sin generar");
 	}
+	
 
 }
