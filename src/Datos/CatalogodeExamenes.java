@@ -8,6 +8,7 @@ import Datos.DBConexion_1;
 import Entidades.Alumno;
 import Entidades.Carrera;
 import Entidades.Examen;
+import Entidades.Profesor;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -187,5 +188,38 @@ public class CatalogodeExamenes extends DBConexion_1{
 	            return null;            
 	        }
 		}
+	
+	public ArrayList<Examen> buscarExamenes(int cod_profesor) throws Exception
+    {
+        try 
+        {    this.Conectar();
+             PreparedStatement consulta= Cone.prepareStatement("select * from profesor_en_comision p INNER JOIN comision c ON c.cod_comision=p.cod_comision INNER JOIN examen e ON e.cod_examen=c.cod_examen WHERE p.cod_profesor=?;");
+             consulta.setInt(1, cod_profesor);
+             ArrayList<Examen> listaExamenes = new ArrayList<Examen>();
+            
+            resu = consulta.executeQuery();
+            while(resu.next())
+               {
+                    
+                    int cod_examen = resu.getInt("cod_examen" );
+                    String tipo_examen = resu.getString("tipo_examen");
+                    int anio = resu.getInt("anio");
+                    String estado = resu.getString("estado");
+                    String descripcion = resu.getString("descripcion");
+                   
+                    listaExamenes.add(new Examen(cod_examen, tipo_examen, anio, estado, descripcion,false));
+                    
+                    
+                    
+               }
+            this.Desconectar();
+            return listaExamenes;
+        }
+        catch (Exception ex)
+        {
+            System.err.println("SQLException: " + ex.getMessage());
+            return null;            
+        }
     
+    }
 }

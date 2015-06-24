@@ -80,5 +80,6 @@ public class XTableModelEjercicios extends AbstractTableModel {
 		return nom;
 		
 	}
+	
 
 }

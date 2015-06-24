@@ -45,20 +45,7 @@ public class ProfesorDesktop extends JFrame {
 	/**
 	 * Launch the application.
 	 */
-/*	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-				 
-					ProfesorDesktop frame = new ProfesorDesktop();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-*/
+
 	/**
 	 * Create the frame.
 	 */
@@ -66,7 +53,7 @@ public class ProfesorDesktop extends JFrame {
 		setTitle("Profesores");
 		//al cancelar o cerrar con la x , solo se cierra el JFrame
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 690, 244);
+		setBounds(100, 100, 690, 297);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);

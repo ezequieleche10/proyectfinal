@@ -8,12 +8,14 @@ import Datos.CatalogodeAlumnos;
 import Datos.CatalogodeComisiones;
 import Datos.CatalogodeEjercicios;
 import Datos.CatalogodeProfesores;
+import Datos.CatalogodeUsuarios;
 import Entidades.Alumno;
 import Entidades.Carrera;
 import Entidades.Comision;
 import Entidades.Ejercicio;
 import Entidades.Examen;
 import Entidades.Profesor;
+import Entidades.Usuario;
 import Datos.CatalogodeCarreras;
 import Datos.CatalogodeExamenes;
 
@@ -33,7 +35,7 @@ public class Controlador {
     private CatalogodeProfesores cdp;
     private CatalogodeComisiones cdco;
     private CatalogodeEjercicios cdej;
-    
+    private CatalogodeUsuarios cdeu;
     public Controlador() {
         cde = new CatalogodeExamenes();
         cdc = new CatalogodeCarreras();
@@ -41,6 +43,7 @@ public class Controlador {
         cdp= new CatalogodeProfesores();
         cdco = new CatalogodeComisiones();
         cdej = new CatalogodeEjercicios();
+        cdeu=new CatalogodeUsuarios();
         }
     
      public ArrayList<Carrera> buscarCarreras() throws Exception{
@@ -191,6 +194,16 @@ public class Controlador {
 		valores[0]=cdco.buscarComision(cod_examen);
 		valores[1]=cdej.buscarEjercicio(cod_examen);
 		return valores;
+	}
+
+	public Usuario validarIngreso(String usu, String pass) throws Exception {
+         return cdeu.getUsuario(usu,pass);
+	
+	}
+	
+	public ArrayList<Examen> buscarExamenes(int cod_profesor) throws Exception
+	{
+		return cde.buscarExamenes(cod_profesor);
 	}
     
 }

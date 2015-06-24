@@ -15,6 +15,9 @@ import javax.swing.JMenuItem;
 import javax.swing.JMenu;
 
 
+
+
+import Entidades.Usuario;
 import Negocio.Controlador;
 
 import java.awt.event.ActionListener;
@@ -31,13 +34,13 @@ import java.awt.GridLayout;
 public class PrincipalDesktop extends JFrame {
 
 	private JPanel contentPane;
-	private static Controlador cont;
+	private Controlador cont;
 
 	
 
 	 
-	public PrincipalDesktop() {
-		cont= new Controlador();
+	public PrincipalDesktop(Controlador contr,Usuario usua) throws Exception {
+		cont=contr;
 		setTitle("Bienvenidos Instituto Olga Cossettini");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
@@ -93,6 +96,7 @@ public class PrincipalDesktop extends JFrame {
 		PanelCargaAlumnos panelTA= new PanelCargaAlumnos(cont, panelPpal);
 		PanelListarAlumnos panelGE= new PanelListarAlumnos(cont,panelPpal);
 		PanelGenerarExamen panelGenerar= new PanelGenerarExamen(cont,panelPpal);
+		PanelCargaNotas panelCargar= new PanelCargaNotas(cont,panelPpal,1);
 		
 		panelPpal.add(panelNulo,"Panel por defecto");
 		panelPpal.add(panelCargarAlumnos,"Panel para cargar alumnos");
@@ -100,6 +104,7 @@ public class PrincipalDesktop extends JFrame {
 		panelPpal.add(panelTA,"Panel carga alumnos");
 		panelPpal.add(panelGE,"Panel lista alumnos");
 		panelPpal.add(panelGenerar,"Panel genera examen");
+		panelPpal.add(panelCargar,"Panel carga notas");
 	//	panelPpal.add(panelListarAlumnos, "Panel para la solicitud de clave");
 	
 		JMenuItem mnListarAlumnos = new JMenuItem("Alumnos en condiciones");
@@ -158,6 +163,15 @@ public class PrincipalDesktop extends JFrame {
 				dispose();
 			}
 		});
+		
+		JMenuItem mntmCargarNotas = new JMenuItem("Cargar Notas");
+		mntmCargarNotas.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				CardLayout cl = (CardLayout)(panelPpal.getLayout());
+			      cl.show(panelPpal, "Panel carga notas");
+			}
+		});
+		mnArchivo.add(mntmCargarNotas);
 		mnArchivo.add(mnuCerrar);
 	}
 }

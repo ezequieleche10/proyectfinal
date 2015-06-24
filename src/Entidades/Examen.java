@@ -9,6 +9,7 @@ import Datos.CatalogodeComisiones;
 import Datos.CatalogodeEjercicios;
 import Datos.CatalogoNotasExamen;
 import Entidades.NotaExamenAlumno;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -28,8 +29,17 @@ public class Examen {
     private List<Ejercicio> listaEjercicios;
     private List<NotaExamenAlumno> listaNotaExamenAlumno; 
     private Comision comision;
+    private Boolean bandera;
 
-   public Examen(){}
+   public Boolean getBandera() {
+		return bandera;
+	}
+
+	public void setBandera(Boolean bandera) {
+		this.bandera = bandera;
+	}
+
+public Examen(){}
 
     public int getCod_examen() {
         return cod_examen;
@@ -90,7 +100,18 @@ public class Examen {
         this.estado = estado;
     }
     
-    public void crearComision() {
+    public Examen(int cod_examen2, String tipo_examen2, int anio2,
+			String estado2, String descripcion2, boolean b) {
+    	 this.descripcion = descripcion2;
+         this.tipo_examen = tipo_examen2;
+         this.anio = anio2;
+         this.estado = estado2;
+         this.cod_examen=cod_examen2;
+         this.bandera=b;
+	
+	}
+
+	public void crearComision() {
         
         CatalogodeComisiones cd = new CatalogodeComisiones();
         

@@ -39,7 +39,39 @@ ArrayList<Alumno> datasource;
 		// TODO Auto-generated method stub
 		return datasource.size();
 	}
-
+	
+	public void setValueAt(Object value, int row, int col) {
+        
+		datasource.get(row);
+	
+		
+		switch (col) {
+		case 0:
+			datasource.get(row).setDni(Integer.parseInt(value.toString()));
+			break;
+		case 1:
+			datasource.get(row).setApellido(value.toString());
+			break;
+		case 2:
+			datasource.get(row).setNombre(value.toString());
+			break;
+		case 3:
+			datasource.get(row).setMail(value.toString());
+			break;
+		case 4:
+			datasource.get(row).setIngreso_directo(value.toString());;
+			break;
+		case 5:
+			datasource.get(row).setTurno_eleccion(value.toString());;
+			break;
+		
+		default:
+		
+			break;
+		}
+        fireTableCellUpdated(row, col);
+    }
+	
 	@Override
 	public Object getValueAt(int arg0, int arg1) {
 		Alumno al= datasource.get(arg0);
