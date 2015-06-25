@@ -10,6 +10,7 @@ import Datos.CatalogodeEjercicios;
 import Datos.CatalogodeProfesores;
 import Datos.CatalogodeUsuarios;
 import Entidades.Alumno;
+import Entidades.AlumnoEnEjercicio;
 import Entidades.Carrera;
 import Entidades.Comision;
 import Entidades.Ejercicio;
@@ -19,6 +20,7 @@ import Entidades.Usuario;
 import Datos.CatalogodeCarreras;
 import Datos.CatalogodeExamenes;
 
+import java.awt.Component;
 import java.util.ArrayList;
 
 import javax.swing.JOptionPane;
@@ -138,6 +140,11 @@ public class Controlador {
     }
     
     public void agregarAlumnosEnEjercicio (int cod_examen) {
+    	ArrayList<Alumno> alums= new ArrayList<Alumno>();
+    	ArrayList<Ejercicio> ejs= new ArrayList<Ejercicio>();
+    	alums=cde.getAllAlumnos(cod_examen);
+    	ejs=cdej.getAllEjercicios(cod_examen);
+    	cdej.agregarAlumnos(cod_examen,alums,ejs);
         
     }
     
@@ -154,7 +161,11 @@ public class Controlador {
         
     }
     
-    public void cargarNota (Alumno alumno, int resultado){
+    public void cargarNotas (Ejercicio e){
+    	
+    	
+    	e.calcularNotaParcial();
+    	cdej.cargarNotas(e);
         
     }
     
@@ -205,5 +216,25 @@ public class Controlador {
 	{
 		return cde.buscarExamenes(cod_profesor);
 	}
+
+	public ArrayList<Ejercicio> getAllEjercicios(int cod) throws Exception {
+		ArrayList<Ejercicio> ejercicios = new ArrayList<Ejercicio>();
+		
+		ejercicios = cde.getAllEjercicios(cod);
+		for (int i =0; i<ejercicios.size();++i)
+		{	
+			ArrayList<AlumnoEnEjercicio> alumsEjer = new ArrayList<AlumnoEnEjercicio>();
+			alumsEjer = cde.recuperarAlumnosEnEjercicio(ejercicios.get(i).getCod_ejercicio(), cod);
+			ejercicios.get(i).setListaAlumnos(alumsEjer);
+		
+		}
+		return ejercicios;
+	}
+
+	public ArrayList<AlumnoEnEjercicio> getAlumnosenEjercicio(int cod, Alumno al) {
+		// TODO Auto-generated method stub
+		return cdej.getAlumnosenEjercicio(cod,al);
+	}
+	
     
 }

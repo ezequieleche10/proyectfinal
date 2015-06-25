@@ -4,6 +4,7 @@ package Desktop;
 
 import java.util.ArrayList;
 
+import javax.swing.JButton;
 import javax.swing.table.AbstractTableModel;
 
 import Entidades.Alumno;
@@ -84,6 +85,8 @@ ArrayList<Examen> datasource;
 			//ver lo del radiobutton
 			o= ex.getBandera(); //new Boolean(false);
 			break;
+		
+
 		default:
 			o=null;
 			break;
@@ -106,6 +109,7 @@ ArrayList<Examen> datasource;
 		case 3:
 			nom="Seleccionar";
 			break;
+		
 		default:
 			nom="";
 			break;

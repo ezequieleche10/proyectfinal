@@ -32,6 +32,12 @@ public class Alumno {
         this.turno_eleccion = turelAl;
         
     }
+    
+    public Alumno(int dniAl, String nomAl, String apeAl) {
+        this.dni = dniAl;
+        this.nombre= nomAl;
+        this.apellido= apeAl;       
+    }
 
     public int getDni() {
         return dni;
@@ -107,6 +113,11 @@ public class Alumno {
         this.usuario = usuario;
         this.contrasenia = contrasenia;
     }
+    
+    public String toString()
+	{
+		return this.getApellido() +" "+  this.getNombre();
+	}
    
     
 }

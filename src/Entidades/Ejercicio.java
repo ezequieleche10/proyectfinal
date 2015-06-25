@@ -5,6 +5,7 @@
  */
 package Entidades;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -18,7 +19,7 @@ public class Ejercicio {
     private String descripcion;
     private int cant_items;
     private int porcentaje;
-    private List<AlumnoEnEjericio> listaAlumnos;
+    private ArrayList<AlumnoEnEjercicio> listaAlumnos;
 
     public Ejercicio(String nombre, String descripcion, int cant_items, int porcentaje) {
         this.nombre = nombre;
@@ -26,6 +27,20 @@ public class Ejercicio {
         this.cant_items = cant_items;
         this.porcentaje = porcentaje;
     }
+    public Ejercicio(int codigo, String nombre, String descripcion, int cant_items, int porcentaje) {
+        this.cod_ejercicio=codigo;
+    	this.nombre = nombre;
+        this.descripcion = descripcion;
+        this.cant_items = cant_items;
+        this.porcentaje = porcentaje;
+    }
+    public Ejercicio(int codigo, String nombre, int cant_items, int porcentaje) {
+        this.cod_ejercicio=codigo;
+    	this.nombre = nombre;
+        this.cant_items = cant_items;
+        this.porcentaje = porcentaje;
+    }
+    
 
     public Ejercicio() {
 		// TODO Auto-generated constructor stub
@@ -51,7 +66,7 @@ public class Ejercicio {
         return porcentaje;
     }
 
-    public List<AlumnoEnEjericio> getListaAlumnos() {
+    public ArrayList<AlumnoEnEjercicio> getListaAlumnos() {
         return listaAlumnos;
     }
     
@@ -84,6 +99,24 @@ public void setCant_items(int cant_items) {
 public void setPorcentaje(int porcentaje) {
 	this.porcentaje = porcentaje;
 }
-    
+public String toString()
+	{
+		return this.getNombre();
+	}
+public void setListaAlumnos(ArrayList<AlumnoEnEjercicio> listaAlumnos) {
+	this.listaAlumnos = listaAlumnos;
+}
+public void calcularNotaParcial() {
+	for(int i=0; i<this.listaAlumnos.size();++i)
+	{
+		float nota_parcial = (listaAlumnos.get(i).getResultado()) * this.getPorcentaje() / this.getCant_items(); 
+		listaAlumnos.get(i).setNota_parcial(nota_parcial);
+	}
+	
+}
+	
+
+
+
     
 }

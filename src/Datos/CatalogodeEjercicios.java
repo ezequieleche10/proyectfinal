@@ -5,6 +5,8 @@
  */
 package Datos;
 
+import Entidades.Alumno;
+import Entidades.AlumnoEnEjercicio;
 import Entidades.Ejercicio;
 import Entidades.Profesor;
 
@@ -69,6 +71,137 @@ public class CatalogodeEjercicios extends DBConexion_1 {
 		}
 	    
 		
+	}
+
+	public void agregarAlumnos(int cod_examen,ArrayList<Alumno> alums,ArrayList<Ejercicio> ejs) {
+		try 
+        {   this.Conectar();
+        	for (int i =0; i<ejs.size(); i++)
+            {
+        		for(int j=0;j<alums.size();j++)
+        		{
+        		PreparedStatement insert= Cone.prepareStatement("INSERT INTO alumno_en_ejercicio_examen(dni,cod_examen,cod_ejercicio,resultado,nota_parcial) VALUES(?,?,?,?,?)");
+        		insert.setInt(1, alums.get(j).getDni());
+        		insert.setInt(2, cod_examen);
+        		insert.setInt(3, ejs.get(i).getCod_ejercicio());
+        		insert.setFloat(4, 0);
+        		insert.setFloat(5, 0);
+                insert.executeUpdate();
+               }
+            }
+        	
+           // JOptionPane.showMessageDialog(null, "Ejercicios cargados correctamente!");
+            this.Desconectar(); 
+        	
+        	
+        	
+        }
+        catch (Exception ex)
+        {
+            System.err.println("SQLException: " + ex.getMessage());            
+        }
+    
+		
+	}
+
+	public ArrayList<Ejercicio> getAllEjercicios(int cod_examen) {
+		  
+		        try{
+		        	
+		        	this.Conectar();
+		        	ArrayList<Ejercicio> ejs = new ArrayList<Ejercicio>();
+		            PreparedStatement consulta= Cone.prepareStatement("SELECT * FROM ejercicio where cod_examen=?");
+		            consulta.setInt(1, cod_examen);
+		             resu = consulta.executeQuery();
+		             while(resu.next())
+		               {
+		                    //int c1 = resu.getInt("cod_examen" );
+		                    int c2 = resu.getInt("cod_ejercicio");
+		                    String c3 = resu.getString("nombre");
+		                    String c4 = resu.getString("descripcion");
+		                    int c5 = resu.getInt("cant_items");
+		                    int c6 = resu.getInt("porcentaje");
+		                    Ejercicio ej = new Ejercicio(c2,c3,c4,c5,c6); 
+		                    ejs.add(ej); 
+		                    
+		               }
+		             this.Desconectar();
+		            return ejs;
+
+		        }
+		        catch (Exception ex)
+		        {
+		            System.err.println("SQLException: " + ex.getMessage());
+		            return null;            
+		        }
+		      
+	}
+
+	public void cargarNotas(Ejercicio e) {
+		
+		try 
+        {   this.Conectar();
+        	for (int i =0; i<e.getListaAlumnos().size(); i++)
+            {
+        		
+           	  PreparedStatement upd = Cone.prepareStatement("UPDATE alumno_en_ejercicio_examen SET resultado= ? , nota_parcial=? WHERE dni= ? AND cod_ejercicio=?");
+           	  upd.setInt(1, e.getListaAlumnos().get(i).getResultado());
+           	  upd.setFloat(2, e.getListaAlumnos().get(i).getNota_parcial());
+           	  upd.setInt(3, e.getListaAlumnos().get(i).getAlumno().getDni());
+           	  upd.setInt(4, e.getCod_ejercicio());
+              upd.executeUpdate();    
+             
+            }
+        	
+        	JOptionPane.showMessageDialog(null, "Las notas para "+e.getNombre()+" han sido cargadas.", "Informacion", JOptionPane.INFORMATION_MESSAGE);
+        	this.Desconectar();
+	
+        	
+        }
+        catch (Exception ex)
+        {
+            System.err.println("SQLException: " + ex.getMessage());            
+        }
+		
+	}
+	
+
+
+
+	public ArrayList<AlumnoEnEjercicio> getAlumnosenEjercicio(int cod, Alumno al) {
+		  
+        try{
+        	
+        	this.Conectar();
+        	ArrayList<AlumnoEnEjercicio> alej = new ArrayList<AlumnoEnEjercicio>();
+            PreparedStatement consulta= Cone.prepareStatement("SELECT * FROM alumno_en_ejercicio_examen INNER JOIN ejercicio on ejercicio.cod_ejercicio=alumno_en_ejercicio_examen.cod_ejercicio AND alumno_en_ejercicio_examen.cod_examen=ejercicio.cod_examen  where alumno_en_ejercicio_examen.cod_examen=? AND alumno_en_ejercicio_examen.dni=?");
+            consulta.setInt(1, cod);
+            consulta.setInt(2, al.getDni());
+             resu = consulta.executeQuery();
+             while(resu.next())
+               {
+                    //int c1 = resu.getInt("cod_examen" );
+            	 	
+                    int codig = resu.getInt("cod_ejercicio");
+                    int c2 = resu.getInt("resultado");
+                    float c3 = resu.getFloat("nota_parcial");
+                     int cant_items = resu.getInt("cant_items");
+                     int porcentaje = resu.getInt("porcentaje");
+                     String nombre= resu.getString("nombre");
+                //    Alumno a= new Alumno()
+                   alej.add(new AlumnoEnEjercicio(new Ejercicio(codig,nombre,cant_items,porcentaje),c2,c3));
+                   
+               }
+             this.Desconectar();
+            return alej;
+
+        }
+        catch (Exception ex)
+        {
+            System.err.println("SQLException: " + ex.getMessage());
+            return null;            
+        }
+      
 	}
     
     

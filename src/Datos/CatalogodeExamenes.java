@@ -7,8 +7,10 @@ package Datos;
 import Datos.DBConexion_1;
 import Entidades.Alumno;
 import Entidades.Carrera;
+import Entidades.Ejercicio;
 import Entidades.Examen;
 import Entidades.Profesor;
+import Entidades.AlumnoEnEjercicio;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -27,6 +29,8 @@ import javax.swing.JOptionPane;
  *
  * @author Lucia
  */
+
+
 public class CatalogodeExamenes extends DBConexion_1{
     
     private ResultSet resu;
@@ -161,7 +165,7 @@ public class CatalogodeExamenes extends DBConexion_1{
 		 {
 	        	this.Conectar();
 	        	ArrayList<Alumno> alumnos = new ArrayList<Alumno>();
-	        	String cons="SELECT * FROM alumno_en_examen INNER JOIN alumno ON alumno_en_examen.dni=alumno.dni WHERE cod_examen = ?";
+	        	String cons="SELECT * FROM alumno_en_examen INNER JOIN alumno ON alumno_en_examen.dni=alumno.dni WHERE cod_examen = ? ORDER BY apellido,nombre";
 	        	
 	            PreparedStatement consulta= Cone.prepareStatement(cons);
 	            consulta.setInt(1, cod_examen);
@@ -222,4 +226,65 @@ public class CatalogodeExamenes extends DBConexion_1{
         }
     
     }
+	
+	public ArrayList<Ejercicio> getAllEjercicios(int cod_examen) throws Exception
+    {
+        try 
+        {   this.Conectar();
+        	ArrayList<Ejercicio> ejercicios = new ArrayList<Ejercicio>();
+        	String lsql = "SELECT * FROM ejercicio WHERE cod_examen=?";
+        	PreparedStatement consulta2= Cone.prepareStatement(lsql);
+        	consulta2.setInt(1, cod_examen);
+        	resu = consulta2.executeQuery();
+        	while(resu.next())
+             {
+        		int cod_ejercicio= resu.getInt("cod_ejercicio");
+        		String nombre = resu.getString("nombre");
+        		String descripcion = resu.getString("descripcion");
+        		int cant_items= resu.getInt("cant_items");
+        		int porcentaje= resu.getInt("porcentaje");
+        		Ejercicio ej = new Ejercicio(cod_ejercicio, nombre, descripcion, cant_items, porcentaje);
+        		ejercicios.add(ej);
+             }
+        	this.Desconectar();
+        	return ejercicios;
+        	
+            
+        }
+        
+        catch (Exception ex)
+        {
+            System.err.println("SQLException: " + ex.getMessage());
+            return null;            
+        }
+       
+    }
+
+	public ArrayList<AlumnoEnEjercicio> recuperarAlumnosEnEjercicio(int cod_ejercicio, int cod_examen) {
+		try
+		{
+		this.Conectar();
+		String vsql="SELECT * FROM ejercicio ej INNER JOIN alumno_en_ejercicio_examen alej ON ej.cod_examen=alej.cod_examen AND ej.cod_ejercicio=alej.cod_ejercicio INNER JOIN alumno al ON alej.dni=al.dni where ej.cod_examen=? AND ej.cod_ejercicio=?";
+        PreparedStatement consulta= Cone.prepareStatement(vsql);
+        consulta.setInt(1, cod_examen);
+        consulta.setInt(2, cod_ejercicio);
+        ArrayList<AlumnoEnEjercicio> alenej = new ArrayList<AlumnoEnEjercicio>();
+        resu = consulta.executeQuery();
+        while(resu.next())
+        {      
+            int dni = resu.getInt("al.dni");
+            String apellido = resu.getString("al.apellido");
+            String nombre =resu.getString("al.nombre");
+            Alumno al = new Alumno(dni, nombre, apellido);
+            int resultado = resu.getInt("alej.resultado");
+            float notaparcial = resu.getFloat("alej.nota_parcial");
+            alenej.add(new AlumnoEnEjercicio(al, resultado, notaparcial));
+        }
+        this.Desconectar();
+		return alenej;
+	}catch (Exception ex){
+		System.err.println("SQLException: " + ex.getMessage());
+        return null; 
+		}
+}
 }

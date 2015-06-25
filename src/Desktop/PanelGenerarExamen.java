@@ -353,6 +353,7 @@ public class PanelGenerarExamen extends JPanel {
 					{
 						
 							try {
+								contr.agregarAlumnosEnEjercicio(cod_examen);
 								contr.cambiarEstadoExamen(cod_examen, "generado");
 								CardLayout cl = (CardLayout)(panelPpal.getLayout());
 							      cl.show(panelPpal, "Panel por defecto");
