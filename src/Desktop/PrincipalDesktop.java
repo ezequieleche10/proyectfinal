@@ -17,8 +17,13 @@ import javax.swing.JMenu;
 
 
 
+
+
+
 import Entidades.Usuario;
 import Negocio.Controlador;
+import Negocio.Opcion;
+import Negocio.Opcion.eleccionMenu;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -35,25 +40,37 @@ public class PrincipalDesktop extends JFrame {
 
 	private JPanel contentPane;
 	private Controlador cont;
-
+	public int valorLayo=0;
+	public static Opcion.eleccionMenu opc;
+	private JMenu mnProfesor;
+	private JMenu mnExamenes;
+	private JMenu mnArchivo;
+	private JMenuBar menuBar;
+	private Usuario usu;
+	private JMenuItem mnuCargarAlumnos;
+	private JMenuItem mntmListarAlumnos;
+	
+	//este valor cambia el valor para indicar que lo llama a actualizar tabla
 	
 
 	 
 	public PrincipalDesktop(Controlador contr,Usuario usua) throws Exception {
+		usu=usua;
 		cont=contr;
+		opc=eleccionMenu.VACIO;
 		setTitle("Bienvenidos Instituto Olga Cossettini");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
 		
-		JMenuBar menuBar = new JMenuBar();
+		menuBar = new JMenuBar();
 		setJMenuBar(menuBar);
 		
-		JMenu mnArchivo = new JMenu("Archivo");
+		mnArchivo = new JMenu("Archivo");
 		menuBar.add(mnArchivo);
 		
 		menuBar.add( Box.createHorizontalStrut( 10 ) );  //this will add a 10 pixel space
 		
-		JMenu mnProfesor= new JMenu("Profesores");
+		mnProfesor= new JMenu("Profesores");
 		menuBar.add(mnProfesor);
 		menuBar.add( Box.createHorizontalStrut( 10 ) );  //this will add a 10 pixel space
 		
@@ -74,7 +91,7 @@ public class PrincipalDesktop extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(new GridLayout(1, 0, 0, 0));
 		
-		JMenu mnExamenes = new JMenu("Examenes");
+		mnExamenes = new JMenu("Examenes");
 		menuBar.add(mnExamenes);
 		
 		
@@ -84,35 +101,40 @@ public class PrincipalDesktop extends JFrame {
 		lblHola.setText("Soy el panel que carga los alumnos");
 		panelCargarAlumnos.add(lblHola);
 		JPanel panelListarAlumnos= new JPanel( new GridLayout());
-		JLabel lblChau= new JLabel();
-		lblChau.setText("Soy el panel listar alumnos");
-		panelListarAlumnos.add(lblChau);
-		JPanel panelNulo= new JPanel();
 		
+	
+
 		JPanel panelPpal = new JPanel();
 		contentPane.add(panelPpal);
+	
 		panelPpal.setLayout(new CardLayout(0, 0));
 		//Pon los paneles en el panel con el CardLayout
-		PanelCargaAlumnos panelTA= new PanelCargaAlumnos(cont, panelPpal);
-		PanelListarAlumnos panelGE= new PanelListarAlumnos(cont,panelPpal);
-		PanelGenerarExamen panelGenerar= new PanelGenerarExamen(cont,panelPpal);
-		PanelCargaNotas panelCargar= new PanelCargaNotas(cont,panelPpal,1);
 		
-		panelPpal.add(panelNulo,"Panel por defecto");
-		panelPpal.add(panelCargarAlumnos,"Panel para cargar alumnos");
-		panelPpal.add(panelListarAlumnos,"Panel que lista alumnos");
-		panelPpal.add(panelTA,"Panel carga alumnos");
-		panelPpal.add(panelGE,"Panel lista alumnos");
-		panelPpal.add(panelGenerar,"Panel genera examen");
-		panelPpal.add(panelCargar,"Panel carga notas");
+		
+
+		JPanel panelNulo= new JPanel();
+		panelPpal.add(panelNulo,"Panel nulo");
+		
+		
+		
+		//panelPpal.add(panelNulo,"Panel por defecto");
+		//panelPpal.add(panelCargarAlumnos,"Panel para cargar alumnos");
+		//panelPpal.add(panelListarAlumnos,"Panel que lista alumnos");
+
+		
+		
+
+		
 	//	panelPpal.add(panelListarAlumnos, "Panel para la solicitud de clave");
 	
 		JMenuItem mnListarAlumnos = new JMenuItem("Alumnos en condiciones");
 		mnListarAlumnos.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				PanelListarAlumnos panelGE= new PanelListarAlumnos(cont,panelPpal);
+				panelPpal.add(panelGE,"Panel lista alumnos");
 				CardLayout cl = (CardLayout)(panelPpal.getLayout());
 			      cl.show(panelPpal, "Panel lista alumnos");
-				
+				valorLayo=1;
 			}
 		});
 		
@@ -131,15 +153,19 @@ public class PrincipalDesktop extends JFrame {
 		JMenuItem mnuGenerarExamen = new JMenuItem("Generar Examen");
 		mnuGenerarExamen.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				PanelGenerarExamen panelGenerar= new PanelGenerarExamen(cont,panelPpal);
+				panelPpal.add(panelGenerar,"Panel genera examen");
 				CardLayout cl = (CardLayout)(panelPpal.getLayout());
 			      cl.show(panelPpal, "Panel genera examen");
 			}
 		});
 		mnExamenes.add(mnuGenerarExamen);
 		
-		JMenuItem mnuCargarAlumnos = new JMenuItem("Cargar Alumnos");
+		mnuCargarAlumnos = new JMenuItem("Cargar Alumnos");
 		mnuCargarAlumnos.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				PanelCargaAlumnos panelTA= new PanelCargaAlumnos(cont, panelPpal);
+				panelPpal.add(panelTA,"Panel carga alumnos");
 				CardLayout cl = (CardLayout)(panelPpal.getLayout());
 			      cl.show(panelPpal, "Panel carga alumnos");
 			 
@@ -148,11 +174,12 @@ public class PrincipalDesktop extends JFrame {
 		});
 		mnArchivo.add(mnuCargarAlumnos);
 		
-		JMenuItem mntmListarAlumnos = new JMenuItem("Listar Alumnos");
+		mntmListarAlumnos = new JMenuItem("Listar Alumnos");
 		mntmListarAlumnos.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				CardLayout cl = (CardLayout)(panelPpal.getLayout());
 			      cl.show(panelPpal, "Panel que lista alumnos");
+			 
 			}
 		});
 		mnArchivo.add(mntmListarAlumnos);
@@ -167,11 +194,50 @@ public class PrincipalDesktop extends JFrame {
 		JMenuItem mntmCargarNotas = new JMenuItem("Cargar Notas");
 		mntmCargarNotas.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				valorLayo=1;
+				opc=eleccionMenu.VERNOTA;
+				PanelCargaNotas panelCargar;
+				try {
+					panelCargar = new PanelCargaNotas(cont,panelPpal,1);
+					panelPpal.add(panelCargar,"Panel carga notas");
+				} catch (Exception e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				
 				CardLayout cl = (CardLayout)(panelPpal.getLayout());
 			      cl.show(panelPpal, "Panel carga notas");
+			      
+			      
 			}
 		});
 		mnArchivo.add(mntmCargarNotas);
+		
+		JMenuItem mntmVerNotas = new JMenuItem("Ver Notas");
+		mntmVerNotas.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				PanelVerNotas panelVerNotas= new PanelVerNotas(cont,panelPpal);
+				panelPpal.add(panelVerNotas,"Panel ver notas");
+				CardLayout cl = (CardLayout)(panelPpal.getLayout());
+			      cl.show(panelPpal, "Panel ver notas");
+			   
+			}
+		});
+		mnArchivo.add(mntmVerNotas);
 		mnArchivo.add(mnuCerrar);
+		
+		validarUsuario();
+	}
+
+	private void validarUsuario() {
+		// TODO Auto-generated method stub
+		if(usu.getTipo_Usuario()==2){
+			this.mnExamenes.setVisible(false);
+			this.mnProfesor.setVisible(false);
+			this.mntmListarAlumnos.setVisible(false);
+			this.mnuCargarAlumnos.setVisible(false);
+
+	}
+		
 	}
 }

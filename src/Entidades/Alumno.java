@@ -20,16 +20,17 @@ public class Alumno {
     private String usuario;
     private String contrasenia;
     private Carrera carrera;
-    
+    private String nombre_carrera;
     public Alumno(){}
 
-    public Alumno(int dniAl, String nomAl, String apeAl, String mailAl, String turelAl, String ingdiAl) {
+    public Alumno(int dniAl, String nomAl, String apeAl, String mailAl, String turelAl, String ingdiAl, String nombreC) {
         this.dni = dniAl;
         this.nombre= nomAl;
         this.apellido= apeAl;
         this.mail = mailAl;
         this.ingreso_directo= ingdiAl;
         this.turno_eleccion = turelAl;
+        this.nombre_carrera=nombreC;
         
     }
     
@@ -114,10 +115,27 @@ public class Alumno {
         this.contrasenia = contrasenia;
     }
     
-    public String toString()
+    public Alumno(int dniAl, String nomAl, String apeAl, String mailAl,
+			String tuelAl, String ingdiAl) {
+    	this.dni = dniAl;
+        this.nombre= nomAl;
+        this.apellido= apeAl;
+        this.mail = mailAl;
+        this.ingreso_directo= ingdiAl;
+        this.turno_eleccion = tuelAl;
+	}
+
+	public String toString()
 	{
 		return this.getApellido() +" "+  this.getNombre();
 	}
-   
+
+	public void setNombre_Carrera(String string) {
+		this.nombre_carrera=string;
+		
+	}
+    public String getNombre_Carrera(){
+    	return this.nombre_carrera;
+    }
     
 }

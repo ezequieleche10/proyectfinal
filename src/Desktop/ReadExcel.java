@@ -41,6 +41,7 @@ public class ReadExcel {
     			case 3: al.setMail(cell.getContents()); break;
     			case 4:al.setIngreso_directo(cell.getContents());break;
     			case 5: al.setTurno_eleccion(cell.getContents());break;
+    			case 6: al.setNombre_Carrera(cell.getContents()); break;
     }}
     alumnos.add(al);
     }

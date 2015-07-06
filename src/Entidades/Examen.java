@@ -26,9 +26,18 @@ public class Examen {
     private String tipo_examen;
     private int anio;
     private String estado;
-    private List<Ejercicio> listaEjercicios;
-    private List<NotaExamenAlumno> listaNotaExamenAlumno; 
-    private Comision comision;
+    private ArrayList<Ejercicio> listaEjercicios;
+    private ArrayList<NotaExamenAlumno> listaNotaExamenAlumno; 
+    public ArrayList<NotaExamenAlumno> getListaNotaExamenAlumno() {
+		return listaNotaExamenAlumno;
+	}
+
+	public void setListaNotaExamenAlumno(
+			ArrayList<NotaExamenAlumno> listaNotaExamenAlumno) {
+		this.listaNotaExamenAlumno = listaNotaExamenAlumno;
+	}
+
+	private Comision comision;
     private Boolean bandera;
 
    public Boolean getBandera() {
@@ -39,7 +48,9 @@ public class Examen {
 		this.bandera = bandera;
 	}
 
-public Examen(){}
+public Examen(){
+	this.listaNotaExamenAlumno = new ArrayList<NotaExamenAlumno>();
+}
 
     public int getCod_examen() {
         return cod_examen;
@@ -137,8 +148,8 @@ public Examen(){}
            
            for(int i=0;i<listaEA.size();i++)
            {
-               String cond = listaEA.get(i).getCondicion();
-               if (cond.equals("aprobado"))
+               float nota = listaEA.get(i).getNota();
+               if (nota>=6)
                {
                    alAprob.add(listaEA.get(i).getAlumno());
                }

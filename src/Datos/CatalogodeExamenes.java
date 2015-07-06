@@ -40,13 +40,13 @@ public class CatalogodeExamenes extends DBConexion_1{
           
             }
     
-    public Examen listarExamen(int cod_carrera, int anio) throws Exception
+    public Examen listarExamen(int anio) throws Exception
     {
         try 
         {   this.Conectar();
-            String vsql="SELECT * FROM examen where cod_carrera=? and (estado = 'sin generar' or estado='alumnos cargados')";
+            String vsql="SELECT * FROM examen where anio=? and (estado = 'sin generar' or estado='alumnos cargados')";
             PreparedStatement consulta= Cone.prepareStatement(vsql);
-            consulta.setInt(1, cod_carrera);
+            consulta.setInt(1, anio);
             resu = consulta.executeQuery();
             resu.first();
             int codEx = resu.getInt("cod_examen" );
@@ -67,18 +67,41 @@ public class CatalogodeExamenes extends DBConexion_1{
        
     }
     
-     public void agregarExamen(Examen e, int cod_carrera) throws Exception
+     public void agregarExamen(Examen e) throws Exception
     {
         try 
         {	this.Conectar();
-        	String actu = "INSERT INTO examen (tipo_examen, anio, estado, cod_carrera, descripcion) VALUES (?,?,?,?,?)";
+        	String actu = "INSERT INTO examen (tipo_examen, anio, estado, descripcion) VALUES (?,?,?,?)";
         	PreparedStatement inse = Cone.prepareStatement(actu);
             inse.setString(1, e.getTipo_examen());
             inse.setInt(2, e.getAnio());
             inse.setString(3, e.getEstado());
-            inse.setInt(4, cod_carrera);
-            inse.setString(5, e.getDescripcion());
+            inse.setString(4, e.getDescripcion());
         	inse.executeUpdate();
+        	String sqlc="SELECT max(cod_examen) as cod FROM examen";
+        	PreparedStatement consult= Cone.prepareStatement(sqlc);
+        	resu=consult.executeQuery();
+        	resu.first();
+        	int codi= resu.getInt("cod");
+        	if(!e.getTipo_examen().equals("C")){
+        		String sql2= "INSERT INTO examen_carrera(cod_examen,cod_carrera) VALUES(?,?)";
+        		PreparedStatement inse2=Cone.prepareStatement(sql2);
+        		inse2.setInt(1, codi);
+        		inse2.setInt(2, 1);
+        		inse2.executeUpdate();
+        		String sql3= "INSERT INTO examen_carrera(cod_examen,cod_carrera) VALUES(?,?)";
+        		PreparedStatement inse3=Cone.prepareStatement(sql3);
+        		inse3.setInt(1, codi);
+        		inse3.setInt(2, 2);
+        		inse3.executeUpdate();
+        	}else {
+        		String sql2= "INSERT INTO examen_carrera(cod_examen,cod_carrera) VALUES(?,?)";
+        		PreparedStatement inse2=Cone.prepareStatement(sql2);
+        		inse2.setInt(1, codi);
+        		inse2.setInt(2, 2);
+        		inse2.executeUpdate();
+        		
+        		}
             this.Desconectar();
             JOptionPane.showMessageDialog(null, "Se agrego el examen correctamente");
         }
@@ -93,7 +116,7 @@ public class CatalogodeExamenes extends DBConexion_1{
     {
         try 
         {	this.Conectar();
-            String consult = "SELECT * FROM examen WHERE tipo_examen = ? AND año=?";
+            String consult = "SELECT * FROM examen WHERE tipo_examen = ? AND anio=?";
             PreparedStatement consulta= Cone.prepareStatement(consult);
             consulta.setString(1, tipo_examen);
             consulta.setInt(2, anio);
@@ -104,7 +127,7 @@ public class CatalogodeExamenes extends DBConexion_1{
             int anioEx = resu.getInt("anio");
             String esEx = resu.getString("estado");
             String desEx = resu.getString("descripcion");
-            Examen ex = new Examen(tipoEx, anioEx, esEx, desEx);   
+            Examen ex = new Examen(codEx,tipoEx, anioEx, esEx, desEx);   
             this.Desconectar();
             return ex;
         }
@@ -178,6 +201,7 @@ public class CatalogodeExamenes extends DBConexion_1{
 	                    String mailAl = resu.getString("mail");
 	                    String ingdiAl = resu.getString("ingreso_directo");
 	                    String tuelAl = resu.getString("turno_eleccion");
+	                 
 	                    Alumno al = new Alumno(dniAl, nomAl, apeAl, mailAl, tuelAl, ingdiAl); 
 	                    alumnos.add(al); 
 	                    
@@ -287,4 +311,41 @@ public class CatalogodeExamenes extends DBConexion_1{
         return null; 
 		}
 }
+
+	public void actualizarNotas(Examen exa) {
+		// TODO Auto-generated method stub
+		//se actualizan todas las notas por alumno 
+		
+			
+			try 
+	        {   this.Conectar();
+	        	for (int i =0; i<exa.getListaNotaExamenAlumno().size(); i++)
+	            {
+	        		
+	           	  PreparedStatement upd = Cone.prepareStatement("UPDATE alumno_en_examen SET nota= ? WHERE dni= ? AND cod_examen=?");
+	           	  upd.setFloat(1, exa.getListaNotaExamenAlumno().get(i).getNota());
+	           	  upd.setInt(2, exa.getListaNotaExamenAlumno().get(i).getAlumno().getDni());
+	           	  upd.setInt(3, exa.getCod_examen());
+	              upd.executeUpdate();  
+	       
+	             
+	            }
+	        	PreparedStatement upd2= Cone.prepareStatement("UPDATE examen SET estado='cerrado' where cod_examen=?");
+	        	upd2.setInt(1, exa.getCod_examen());
+	        	upd2.executeUpdate();  
+	        	JOptionPane.showMessageDialog(null, "Examen cerrado", "Informacion", JOptionPane.INFORMATION_MESSAGE);
+	        	this.Desconectar();
+		
+	        	
+	        }
+	        catch (Exception ex)
+	        {
+	            System.err.println("SQLException: " + ex.getMessage());            
+	        }
+			
+		}
+		
+		
+		
+	
 }

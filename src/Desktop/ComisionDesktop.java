@@ -66,7 +66,7 @@ public class ComisionDesktop extends JFrame {
 	public ComisionDesktop(Controlador cont, int cod_examen, JLabel estadoComision) {
 		contr = cont;
 		lp= new ArrayList<Profesor>();
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -192,6 +192,11 @@ public class ComisionDesktop extends JFrame {
 		panel.add(btnAgregar, gbc_btnAgregar);
 		
 		JButton btnCancelar = new JButton("Cancelar");
+		btnCancelar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				dispose();
+			}
+		});
 		GridBagConstraints gbc_btnCancelar = new GridBagConstraints();
 		gbc_btnCancelar.anchor = GridBagConstraints.EAST;
 		gbc_btnCancelar.insets = new Insets(0, 0, 0, 5);

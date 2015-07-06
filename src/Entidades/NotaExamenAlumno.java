@@ -15,13 +15,15 @@ public class NotaExamenAlumno {
         this.nota = nota;
         this.condicion = condicion;
         this.alumno = alumno;
+        
     }
     
     private float nota;
     private String condicion;
     private Alumno alumno;
+   
 
-    public float getNota() {
+	public float getNota() {
         return nota;
     }
 
@@ -32,6 +34,18 @@ public class NotaExamenAlumno {
     public Alumno getAlumno() {
         return alumno;
     }
+
+	public void setNota(float nota) {
+		this.nota = nota;
+	}
+
+	public void setCondicion(String condicion) {
+		this.condicion = condicion;
+	}
+
+	public void setAlumno(Alumno alumno) {
+		this.alumno = alumno;
+	}
     
     
     

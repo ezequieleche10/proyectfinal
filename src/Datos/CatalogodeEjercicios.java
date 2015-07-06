@@ -149,7 +149,8 @@ public class CatalogodeEjercicios extends DBConexion_1 {
            	  upd.setFloat(2, e.getListaAlumnos().get(i).getNota_parcial());
            	  upd.setInt(3, e.getListaAlumnos().get(i).getAlumno().getDni());
            	  upd.setInt(4, e.getCod_ejercicio());
-              upd.executeUpdate();    
+              upd.executeUpdate();  
+       
              
             }
         	
@@ -174,21 +175,23 @@ public class CatalogodeEjercicios extends DBConexion_1 {
         	
         	this.Conectar();
         	ArrayList<AlumnoEnEjercicio> alej = new ArrayList<AlumnoEnEjercicio>();
-            PreparedStatement consulta= Cone.prepareStatement("SELECT * FROM alumno_en_ejercicio_examen INNER JOIN ejercicio on ejercicio.cod_ejercicio=alumno_en_ejercicio_examen.cod_ejercicio AND alumno_en_ejercicio_examen.cod_examen=ejercicio.cod_examen  where alumno_en_ejercicio_examen.cod_examen=? AND alumno_en_ejercicio_examen.dni=?");
+            PreparedStatement consulta= Cone.prepareStatement("SELECT * FROM alumno_en_ejercicio_examen INNER JOIN ejercicio on ejercicio.cod_ejercicio=alumno_en_ejercicio_examen.cod_ejercicio AND alumno_en_ejercicio_examen.cod_examen=ejercicio.cod_examen where alumno_en_ejercicio_examen.cod_examen=? AND alumno_en_ejercicio_examen.dni=?");
             consulta.setInt(1, cod);
             consulta.setInt(2, al.getDni());
-             resu = consulta.executeQuery();
+            resu = consulta.executeQuery();
              while(resu.next())
                {
                     //int c1 = resu.getInt("cod_examen" );
             	 	
                     int codig = resu.getInt("cod_ejercicio");
+                    //int codex= resu.getInt("cod")
                     int c2 = resu.getInt("resultado");
                     float c3 = resu.getFloat("nota_parcial");
-                     int cant_items = resu.getInt("cant_items");
-                     int porcentaje = resu.getInt("porcentaje");
-                     String nombre= resu.getString("nombre");
-                //    Alumno a= new Alumno()
+                     int cant_items = resu.getInt("ejercicio.cant_items");
+                     int porcentaje = resu.getInt("ejercicio.porcentaje");
+                     String nombre= resu.getString("ejercicio.nombre");
+                     
+                    
                    alej.add(new AlumnoEnEjercicio(new Ejercicio(codig,nombre,cant_items,porcentaje),c2,c3));
                    
                }
@@ -203,8 +206,76 @@ public class CatalogodeEjercicios extends DBConexion_1 {
         }
       
 	}
+
+	public void agregarNotasEnEjercicio(ArrayList<AlumnoEnEjercicio> alen,float nota, int cod) {
+		try 
+        {   this.Conectar();
+        	for (int i =0; i<alen.size(); i++)
+            {
+        		
+           	  PreparedStatement upd = Cone.prepareStatement("UPDATE alumno_en_ejercicio_examen SET resultado= ? , nota_parcial=? WHERE dni= ? AND cod_ejercicio=?");
+           	  upd.setInt(1, alen.get(i).getResultado());
+           	  upd.setFloat(2, alen.get(i).getNota_parcial());
+           	  upd.setInt(3, alen.get(i).getAlumno().getDni());
+           	  upd.setInt(4, alen.get(i).getEjer().getCod_ejercicio());
+              upd.executeUpdate();    
+             
+            }
+        	
+        	PreparedStatement upd2= Cone.prepareStatement("UPDATE alumno_en_examen SET nota=? where dni=? and cod_examen=?");
+        	upd2.setFloat(1,nota);
+        	upd2.setInt(2, alen.get(0).getAlumno().getDni());
+        	upd2.setInt(3, cod);
+        	upd2.executeUpdate();
+            JOptionPane.showMessageDialog(null, "Las notas para "+alen.get(1).getAlumno().getNombre()+" han sido cargadas.", "Informacion", JOptionPane.INFORMATION_MESSAGE);
+        	this.Desconectar();
+	
+        	
+        }
+        catch (Exception ex)
+        {
+            System.err.println("SQLException: " + ex.getMessage());            
+        }
+		
+	}
     
-    
+	public ArrayList<AlumnoEnEjercicio> getAlumnosEnEjercicios(int cod) {
+		  
+        try{
+        	
+        	this.Conectar();
+        	ArrayList<AlumnoEnEjercicio> alej = new ArrayList<AlumnoEnEjercicio>();
+            PreparedStatement consulta= Cone.prepareStatement("SELECT * FROM alumno_en_ejercicio_examen alej INNER JOIN alumno on alumno.dni=alej.dni INNER JOIN carrera on carrera.cod_carrera=alumno.cod_carrera where alej.cod_examen=? ");
+            consulta.setInt(1, cod);
+            
+            resu = consulta.executeQuery();
+             while(resu.next())
+               {
+                    //int c1 = resu.getInt("cod_examen" );
+            	 	
+                    int codig = resu.getInt("cod_ejercicio");
+                    //int codex= resu.getInt("cod")
+                    float notaParcial = resu.getFloat("nota_parcial");
+                    int dni=resu.getInt("alej.dni");
+                    String nombre=resu.getString("alumno.nombre");
+                    String apellido=resu.getString("alumno.apellido");
+                    String nombreCarrera=resu.getString("carrera.nombre");
+                    Alumno al= new Alumno(dni,nombre,apellido,"","","",nombreCarrera);
+                    
+                   alej.add(new AlumnoEnEjercicio(al,0,notaParcial));
+                   
+               }
+             this.Desconectar();
+            return alej;
+
+        }
+        catch (Exception ex)
+        {
+            System.err.println("SQLException: " + ex.getMessage());
+            return null;            
+        }
+      
+	}
     
     
 }

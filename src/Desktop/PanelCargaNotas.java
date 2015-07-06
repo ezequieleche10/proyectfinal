@@ -7,6 +7,7 @@ import Entidades.AlumnoEnEjercicio;
 import Entidades.Ejercicio;
 import Entidades.Examen;
 import Negocio.Controlador;
+import Negocio.Opcion.eleccionMenu;
 
 import java.awt.GridBagLayout;
 
@@ -52,13 +53,14 @@ public class PanelCargaNotas extends JPanel {
 	 * @throws Exception 
 	 */
 	public PanelCargaNotas(Controlador cont,JPanel panelPpal, int cod_profesor) throws Exception {
+
 		contr=cont;
 		codigprof = cod_profesor;
 		GridBagLayout gridBagLayout = new GridBagLayout();
 		gridBagLayout.columnWidths = new int[]{0, 109, 116, 0, 0, 33, 42, -28, 0, 0, 0};
-		gridBagLayout.rowHeights = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+		gridBagLayout.rowHeights = new int[]{0, 0, 0, 0, 0, 0, 0, 0};
 		gridBagLayout.columnWeights = new double[]{0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, Double.MIN_VALUE};
-		gridBagLayout.rowWeights = new double[]{0.0, 0.2, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
+		gridBagLayout.rowWeights = new double[]{0.0, 0.2, 0.0, 0.0, 1.0, 0.0, 0.0, Double.MIN_VALUE};
 		setLayout(gridBagLayout);
 		
 		JScrollPane scrollPane = new JScrollPane();
@@ -111,10 +113,11 @@ public class PanelCargaNotas extends JPanel {
 						    txtPorcentaje.setVisible(true);
 						    lblPorcentaje.setVisible(true);
 							
-						} catch (Exception e1) {
+							} catch (Exception e1) {
 							// TODO Auto-generated catch block
 							e1.printStackTrace();
 						}
+					break;
 					case 2:
 						try { 
 							lblSeleccionarEjercicio.setText("Seleccione alumno");
@@ -124,6 +127,8 @@ public class PanelCargaNotas extends JPanel {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					}
+						break;
+						default: break;
 					} 
 				     
 					
@@ -216,7 +221,7 @@ public class PanelCargaNotas extends JPanel {
 		add(txtPorcentaje, gbc_txtPorcentaje);
 		txtPorcentaje.setColumns(10);
 		GridBagConstraints gbc_scrollNotas = new GridBagConstraints();
-		gbc_scrollNotas.gridheight = 4;
+		gbc_scrollNotas.gridheight = 2;
 		gbc_scrollNotas.gridwidth = 7;
 		gbc_scrollNotas.insets = new Insets(0, 0, 5, 5);
 		gbc_scrollNotas.fill = GridBagConstraints.BOTH;
@@ -228,30 +233,44 @@ public class PanelCargaNotas extends JPanel {
 		scrollNotas.setViewportView(tableNotas);
 		tableNotas.setVisible(false);
 		
+		JButton btnCancelar = new JButton("Cancelar");
+		btnCancelar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				CardLayout cl = (CardLayout)(panelPpal.getLayout());
+	       	      cl.show(panelPpal, "Panel nulo");
+			}
+		});
+		GridBagConstraints gbc_btnCancelar = new GridBagConstraints();
+		gbc_btnCancelar.fill = GridBagConstraints.HORIZONTAL;
+		gbc_btnCancelar.insets = new Insets(0, 0, 5, 5);
+		gbc_btnCancelar.gridx = 8;
+		gbc_btnCancelar.gridy = 4;
+		add(btnCancelar, gbc_btnCancelar);
+		
 		JButton btnGuardar = new JButton("Guardar");
 		btnGuardar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
-				
+				if(op==1)
+				{
 				Ejercicio ex= new Ejercicio();
 				ex= (Ejercicio)cboEjercicios.getSelectedItem();
 				contr.cargarNotas(ex);
-				
+				}
+				if(op==2)
+				{
+				guardarTabla();
+				}
 			}
 		});
-		
-		JButton btnCancelar = new JButton("Cancelar");
-		GridBagConstraints gbc_btnCancelar = new GridBagConstraints();
-		gbc_btnCancelar.fill = GridBagConstraints.HORIZONTAL;
-		gbc_btnCancelar.insets = new Insets(0, 0, 0, 5);
-		gbc_btnCancelar.gridx = 8;
-		gbc_btnCancelar.gridy = 8;
-		add(btnCancelar, gbc_btnCancelar);
 		GridBagConstraints gbc_btnGuardar = new GridBagConstraints();
+		gbc_btnGuardar.insets = new Insets(0, 0, 5, 0);
 		gbc_btnGuardar.anchor = GridBagConstraints.WEST;
 		gbc_btnGuardar.gridx = 9;
-		gbc_btnGuardar.gridy = 8;
+		gbc_btnGuardar.gridy = 4;
 		add(btnGuardar, gbc_btnGuardar);
+		//JOptionPane.showMessageDialog(null, eleccionMenu.VERNOTA);
+		//if(opc.equals(eleccionMenu.VERNOTA))
 		llenarTabla();
 
 	}
@@ -283,10 +302,14 @@ public class PanelCargaNotas extends JPanel {
 		return codigo;
 		
 	}
+	private void borrarCombo(){
+		cboEjercicios.removeAllItems();
+			}
 	private void cargaPorAlumnos(int codigo) {
+		borrarCombo();
 		cboEjercicios.addItem("Seleccione alumno");
 		ArrayList<Alumno> alums= new ArrayList<Alumno>();
-	   	alums= contr.getAlumnosenExamen(codigo);
+	   alums= contr.getAlumnosenExamen(codigo);
 	   	for(int i=0; i<alums.size();++i){
 	   		
 	   			cboEjercicios.addItem(alums.get(i));
@@ -294,6 +317,7 @@ public class PanelCargaNotas extends JPanel {
 	}
 
 	private void cargaPorEjercicios(int codigo) throws Exception {
+		borrarCombo();
 	   	cboEjercicios.addItem("Seleccione ejercicio");
 	   	ArrayList<Ejercicio> ejs= new ArrayList<Ejercicio>();
 	   	ejs= contr.getAllEjercicios(codigo);
@@ -320,7 +344,7 @@ public class PanelCargaNotas extends JPanel {
 	    Alumno al = new Alumno();
 		int cod_ex=recuperarDatosTabla();
 		al=(Alumno)cboEjercicios.getSelectedItem();
-		ArrayList<AlumnoEnEjercicio> alumenej= new ArrayList<AlumnoEnEjercicio>();
+	    ArrayList<AlumnoEnEjercicio> alumenej= new ArrayList<AlumnoEnEjercicio>();
 	    alumenej= contr.getAlumnosenEjercicio(cod_ex,al);
 	    XTableModelNotasAl modeloA= new XTableModelNotasAl();
 		modeloA.setDatasource(alumenej);
@@ -328,6 +352,37 @@ public class PanelCargaNotas extends JPanel {
 		tableNotas.setModel(modeloA);
 		}
 	}
+	private void guardarTabla(){
+		
+		ArrayList<AlumnoEnEjercicio> alen= new ArrayList<AlumnoEnEjercicio>();
+		TableModel tm=	tableNotas.getModel();
+		int cols = tm.getColumnCount(); 
+		int filas = tm.getRowCount();
+		Alumno al=(Alumno)cboEjercicios.getSelectedItem();
+		for(int i=0; i<filas; i++) { 
+			AlumnoEnEjercicio alej = new AlumnoEnEjercicio();
+			Ejercicio ej= new Ejercicio();
+			alej.setEjer(ej);
+			alej.setAlumno(al);
+		for(int j=0; j<cols; j++){ 
+			switch(j){
+		case 0: alej.getEjer().setCod_ejercicio((Integer.parseInt(tm.getValueAt(i,j).toString())));break;
+		case 1: break;
+		case 2: alej.setNota_parcial(Float.parseFloat(tm.getValueAt(i,j).toString()));
+		case 3: break;
+		case 4: break;
+		case 5: alej.setResultado(Integer.parseInt(tm.getValueAt(i,j).toString()));break;
+		
+			}
+			
+		}
+		alen.add(alej);
+		
+		
+	}
+		int cod=recuperarDatosTabla();
+		contr.agregarNotasEnEjercicios(alen,cod);
 	
 
+	}
 }

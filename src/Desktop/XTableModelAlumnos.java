@@ -31,7 +31,7 @@ ArrayList<Alumno> datasource;
 	@Override
 	public int getColumnCount() {
 		// TODO Auto-generated method stub
-		return 6;
+		return 7;
 	}
 
 	@Override
@@ -62,9 +62,11 @@ ArrayList<Alumno> datasource;
 			datasource.get(row).setIngreso_directo(value.toString());;
 			break;
 		case 5:
-			datasource.get(row).setTurno_eleccion(value.toString());;
+			datasource.get(row).setTurno_eleccion(value.toString());
 			break;
-		
+		case 6:
+			datasource.get(row).setNombre_Carrera(value.toString());
+			break;
 		default:
 		
 			break;
@@ -95,7 +97,9 @@ ArrayList<Alumno> datasource;
 		case 5:
 			o=al.getTurno_eleccion();
 			break;
-		
+		case 6:
+			o=al.getNombre_Carrera();
+			break;
 		default:
 			o=null;
 			break;
@@ -123,6 +127,9 @@ ArrayList<Alumno> datasource;
 		    break;
 		case 5:
 			nom="Turno elección";
+			break;
+		case 6:
+			nom="Carrera";
 			break;
 		default:
 			nom="";

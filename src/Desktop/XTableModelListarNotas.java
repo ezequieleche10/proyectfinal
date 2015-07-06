@@ -6,23 +6,28 @@ import javax.swing.table.AbstractTableModel;
 
 import Entidades.Alumno;
 import Entidades.AlumnoEnEjercicio;
+import Entidades.NotaExamenAlumno;
 
-public class XTableModelNotas extends AbstractTableModel {
+public class XTableModelListarNotas extends AbstractTableModel {
 
-ArrayList<AlumnoEnEjercicio> datasource;
+ArrayList<NotaExamenAlumno> datasource;
 	
 	
-	public ArrayList<AlumnoEnEjercicio> getDatasource() {
+	public ArrayList<NotaExamenAlumno> getDatasource() {
 		return datasource;
 	}
 
-	public void setDatasource(ArrayList<AlumnoEnEjercicio> datasource) {
+	public void setDatasource(ArrayList<NotaExamenAlumno> datasource) {
 		this.datasource = datasource;
 	}
 	
 	@Override
 	public boolean isCellEditable(int row, int column) {
-	    return true;
+		if (column < 4) {
+	            return false;
+	        } else {
+	       return true;
+	        }
 	}
 	
 	@Override
@@ -37,48 +42,58 @@ ArrayList<AlumnoEnEjercicio> datasource;
 		return datasource.size();
 	}
 	
+	 
+	
 	public void setValueAt(Object value, int row, int col) {
         
-	//	datasource.get(row);
+		//datasource.get(row);
 	
 		
 		switch (col) {
 		case 0:
-			datasource.get(row).getAlumno().setDni(Integer.parseInt(value.toString()));
 			break;
 		case 1:
-			datasource.get(row).getAlumno().setApellido(value.toString());
+			datasource.get(row).getAlumno().setDni(Integer.parseInt(value.toString()));
 			break;
 		case 2:
 			datasource.get(row).getAlumno().setNombre(value.toString());
 			break;
 		case 3:
-			datasource.get(row).setResultado(Integer.parseInt(value.toString()));
+			datasource.get(row).getAlumno().setApellido(value.toString());
 			break;
+		case 4:
+			datasource.get(row).setNota(Float.parseFloat(value.toString()));
+			break;
+	
+		
 		default:
 		
 			break;
 		}
-        fireTableCellUpdated(row, col);
+		
+      //  fireTableCellUpdated(row, col);
+		//  fireTableRowsUpdated(0, datasource.size());
     }
 	
 	@Override
 	public Object getValueAt(int arg0, int arg1) {
-		AlumnoEnEjercicio alej= datasource.get(arg0);
+		NotaExamenAlumno nea= datasource.get(arg0);
 		Object o;
 		switch (arg1) {
 		case 0:
-			o=alej.getAlumno().getDni();
+			o=nea.getAlumno().getDni();
 			break;
 		case 1:
-			o=alej.getAlumno().getApellido();
+			o=nea.getAlumno().getNombre();
 			break;
 		case 2:
-			o=alej.getAlumno().getNombre();
+			o=nea.getAlumno().getApellido();
 			break;
 		case 3:
-			o=alej.getResultado();
-			break;
+			o=nea.getNota();
+			break;	
+		
+			
 		default:
 			o=null;
 			break;
@@ -89,19 +104,19 @@ ArrayList<AlumnoEnEjercicio> datasource;
 	{
 		String nom="";
 		switch (column) {
-		case 0:
+		case 0: 
 			nom="Dni";
 			break;
 		case 1:
-			nom="Apellido";
-			break;
-		case 2:
 			nom="Nombre";
 			break;
-		case 3:
-			nom="Items aprobados";
+		case 2:
+			nom="Apellido";
 			break;
-	
+		case 3:
+			nom="Nota";
+			break;
+		
 		default:
 			nom="";
 			break;
@@ -111,7 +126,3 @@ ArrayList<AlumnoEnEjercicio> datasource;
 	}
 
 }
-
-	
-	
-

@@ -30,7 +30,6 @@ public class ExamenDesktop extends JFrame {
 
 	private JPanel contentPane;
 	private JTextField txtAño;
-	private JTextField txtCod_carrera;
 
 	/**
 	 * Launch the application.
@@ -53,7 +52,7 @@ public class ExamenDesktop extends JFrame {
 	 */
 	public ExamenDesktop(Controlador cont) {
 		setTitle("Examen");
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 690, 244);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -100,7 +99,7 @@ public class ExamenDesktop extends JFrame {
 		GridBagConstraints gbc_scrollPane = new GridBagConstraints();
 		gbc_scrollPane.gridheight = 3;
 		gbc_scrollPane.gridwidth = 3;
-		gbc_scrollPane.insets = new Insets(0, 0, 5, 5);
+		gbc_scrollPane.insets = new Insets(0, 0, 5, 0);
 		gbc_scrollPane.fill = GridBagConstraints.BOTH;
 		gbc_scrollPane.gridx = 3;
 		gbc_scrollPane.gridy = 1;
@@ -109,14 +108,6 @@ public class ExamenDesktop extends JFrame {
 		JTextArea textDescripcion = new JTextArea();
 		scrollPane.setViewportView(textDescripcion);
 		
-		JLabel lblCod_carrera = new JLabel("Codigo Carrera");
-		GridBagConstraints gbc_lblCod_carrera = new GridBagConstraints();
-		gbc_lblCod_carrera.anchor = GridBagConstraints.EAST;
-		gbc_lblCod_carrera.insets = new Insets(0, 0, 5, 5);
-		gbc_lblCod_carrera.gridx = 0;
-		gbc_lblCod_carrera.gridy = 2;
-		panel.add(lblCod_carrera, gbc_lblCod_carrera);
-		
 		JButton btnCancelar = new JButton("Cancelar");
 		btnCancelar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -124,21 +115,12 @@ public class ExamenDesktop extends JFrame {
 			}
 		});
 		
-		txtCod_carrera = new JTextField();
-		GridBagConstraints gbc_txtCod_carrera = new GridBagConstraints();
-		gbc_txtCod_carrera.insets = new Insets(0, 0, 5, 5);
-		gbc_txtCod_carrera.fill = GridBagConstraints.HORIZONTAL;
-		gbc_txtCod_carrera.gridx = 1;
-		gbc_txtCod_carrera.gridy = 2;
-		panel.add(txtCod_carrera, gbc_txtCod_carrera);
-		txtCod_carrera.setColumns(10);
-		
 		JLabel lblUsuario = new JLabel("Año:");
 		GridBagConstraints gbc_lblUsuario = new GridBagConstraints();
 		gbc_lblUsuario.anchor = GridBagConstraints.EAST;
 		gbc_lblUsuario.insets = new Insets(0, 0, 5, 5);
 		gbc_lblUsuario.gridx = 0;
-		gbc_lblUsuario.gridy = 3;
+		gbc_lblUsuario.gridy = 2;
 		panel.add(lblUsuario, gbc_lblUsuario);
 		
 		txtAño = new JTextField();
@@ -146,7 +128,7 @@ public class ExamenDesktop extends JFrame {
 		gbc_txtAño.insets = new Insets(0, 0, 5, 5);
 		gbc_txtAño.fill = GridBagConstraints.HORIZONTAL;
 		gbc_txtAño.gridx = 1;
-		gbc_txtAño.gridy = 3;
+		gbc_txtAño.gridy = 2;
 		panel.add(txtAño, gbc_txtAño);
 		txtAño.setColumns(10);
 		GridBagConstraints gbc_btnCancelar = new GridBagConstraints();
@@ -159,7 +141,7 @@ public class ExamenDesktop extends JFrame {
 		btnAgregarExamen.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				try {
-					cont.agregarExamen((String)cboTipo_examen.getSelectedItem(),Integer.parseInt(txtCod_carrera.getText().toString()),Integer.parseInt((txtAño.getText().toString())),textDescripcion.getText());
+					cont.agregarExamen((String)cboTipo_examen.getSelectedItem(),Integer.parseInt((txtAño.getText().toString())),textDescripcion.getText());
 					dispose();
 				
 				} catch (Exception e) {

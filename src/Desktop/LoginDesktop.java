@@ -84,9 +84,9 @@ public class LoginDesktop extends JFrame {
 		setContentPane(contentPane);
 		GridBagLayout gbl_contentPane = new GridBagLayout();
 		gbl_contentPane.columnWidths = new int[]{60, 130, 100, 100, 150};
-		gbl_contentPane.rowHeights = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+		gbl_contentPane.rowHeights = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 		gbl_contentPane.columnWeights = new double[]{0.2, 0.2, 0.2, 0.2, 0.2};
-		gbl_contentPane.rowWeights = new double[]{0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, Double.MIN_VALUE};
+		gbl_contentPane.rowWeights = new double[]{0.1, 0.1, 0.1, 0.1, 0.0, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, Double.MIN_VALUE};
 		contentPane.setLayout(gbl_contentPane);
 		
 		JLabel lblBienvenido = new JLabel("Bienvenido");
@@ -104,25 +104,8 @@ public class LoginDesktop extends JFrame {
 		GridBagConstraints gbc_lblUsuario = new GridBagConstraints();
 		gbc_lblUsuario.insets = new Insets(0, 0, 5, 5);
 		gbc_lblUsuario.gridx = 1;
-		gbc_lblUsuario.gridy = 4;
+		gbc_lblUsuario.gridy = 5;
 		contentPane.add(lblUsuario, gbc_lblUsuario);
-		
-		txtClave = new JTextField();
-		GridBagConstraints gbc_txtClave = new GridBagConstraints();
-		gbc_txtClave.gridwidth = 2;
-		gbc_txtClave.insets = new Insets(0, 0, 5, 5);
-		gbc_txtClave.fill = GridBagConstraints.HORIZONTAL;
-		gbc_txtClave.gridx = 2;
-		gbc_txtClave.gridy = 4;
-		contentPane.add(txtClave, gbc_txtClave);
-		txtClave.setColumns(10);
-		
-		JLabel lblClave = new JLabel("Clave: ");
-		GridBagConstraints gbc_lblClave = new GridBagConstraints();
-		gbc_lblClave.insets = new Insets(0, 0, 5, 5);
-		gbc_lblClave.gridx = 1;
-		gbc_lblClave.gridy = 5;
-		contentPane.add(lblClave, gbc_lblClave);
 		
 		txtUsuario = new JTextField();
 		txtUsuario.addKeyListener(new KeyAdapter() {
@@ -146,12 +129,29 @@ public class LoginDesktop extends JFrame {
 		contentPane.add(txtUsuario, gbc_txtUsuario);
 		txtUsuario.setColumns(10);
 		
+		JLabel lblClave = new JLabel("Clave: ");
+		GridBagConstraints gbc_lblClave = new GridBagConstraints();
+		gbc_lblClave.insets = new Insets(0, 0, 5, 5);
+		gbc_lblClave.gridx = 1;
+		gbc_lblClave.gridy = 6;
+		contentPane.add(lblClave, gbc_lblClave);
+		
+		txtClave = new JTextField();
+		GridBagConstraints gbc_txtClave = new GridBagConstraints();
+		gbc_txtClave.gridwidth = 2;
+		gbc_txtClave.insets = new Insets(0, 0, 5, 5);
+		gbc_txtClave.fill = GridBagConstraints.HORIZONTAL;
+		gbc_txtClave.gridx = 2;
+		gbc_txtClave.gridy = 6;
+		contentPane.add(txtClave, gbc_txtClave);
+		txtClave.setColumns(10);
+		
 		JButton btnCancelar = new JButton("Cancelar");
 		GridBagConstraints gbc_btnCancelar = new GridBagConstraints();
 		gbc_btnCancelar.fill = GridBagConstraints.HORIZONTAL;
 		gbc_btnCancelar.insets = new Insets(0, 0, 5, 5);
 		gbc_btnCancelar.gridx = 2;
-		gbc_btnCancelar.gridy = 6;
+		gbc_btnCancelar.gridy = 7;
 		gbc_btnCancelar.gridwidth=1;
 		gbc_btnCancelar.gridheight=1;
 		contentPane.add(btnCancelar, gbc_btnCancelar);
@@ -166,7 +166,7 @@ public class LoginDesktop extends JFrame {
 		gbc_btnIngresar.fill = GridBagConstraints.HORIZONTAL;
 		gbc_btnIngresar.insets = new Insets(0, 0, 5, 5);
 		gbc_btnIngresar.gridx = 3;
-		gbc_btnIngresar.gridy = 6;
+		gbc_btnIngresar.gridy = 7;
 		gbc_btnIngresar.gridwidth=1;
 		gbc_btnIngresar.gridheight=1;
 		contentPane.add(btnIngresar, gbc_btnIngresar);
@@ -174,6 +174,7 @@ public class LoginDesktop extends JFrame {
 	private void procesar(){
 		String usu=txtUsuario.getText().toString();
 		String pass=txtClave.getText().toString();
+		
 		Usuario usua = new Usuario();
 		if(usu.length()!=0 && pass.length()!=0 )
 	   {
@@ -191,7 +192,9 @@ public class LoginDesktop extends JFrame {
 		try {
 			pd = new PrincipalDesktop(cont,usua);
 			pd.setVisible(true);
-			pd.setExtendedState(MAXIMIZED_BOTH); //inicia maximizada
+			pd.setLocationRelativeTo(null);
+			pd.setMinimumSize(new Dimension(800,500));
+			//pd.setExtendedState(.); //inicia maximizada
 			dispose();
 		} catch (Exception e1) {
 			// TODO Auto-generated catch block

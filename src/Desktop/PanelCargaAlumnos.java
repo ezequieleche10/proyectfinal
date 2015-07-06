@@ -138,6 +138,7 @@ public class PanelCargaAlumnos extends JPanel {
 			case 3: alum.setMail(tm.getValueAt(i,j).toString()); break;
 			case 4:alum.setIngreso_directo(tm.getValueAt(i,j).toString());break;
 			case 5: alum.setTurno_eleccion(tm.getValueAt(i,j).toString());break;
+			case 6: alum.setNombre_Carrera(tm.getValueAt(i, j).toString());break;
 				}
 				
 			}

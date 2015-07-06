@@ -46,9 +46,15 @@ public class Ejercicio {
 		// TODO Auto-generated constructor stub
 	}
 
+	public Ejercicio(int cod) {
+		this.cod_ejercicio=cod;
+	}
 	public int getCod_ejercicio() {
         return cod_ejercicio;
     }
+	public void setCod_ejercicio(int cod){
+		this.cod_ejercicio=cod;
+	}
 
     public String getNombre() {
         return nombre;
@@ -109,7 +115,7 @@ public void setListaAlumnos(ArrayList<AlumnoEnEjercicio> listaAlumnos) {
 public void calcularNotaParcial() {
 	for(int i=0; i<this.listaAlumnos.size();++i)
 	{
-		float nota_parcial = (listaAlumnos.get(i).getResultado()) * this.getPorcentaje() / this.getCant_items(); 
+		float nota_parcial = (listaAlumnos.get(i).getResultado()) * this.getPorcentaje() / (this.getCant_items()*10); 
 		listaAlumnos.get(i).setNota_parcial(nota_parcial);
 	}
 	

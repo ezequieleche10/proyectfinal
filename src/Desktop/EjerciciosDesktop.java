@@ -1,6 +1,7 @@
 package Desktop;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
@@ -51,7 +52,7 @@ public class EjerciciosDesktop extends JFrame {
 	public EjerciciosDesktop(Controlador cont, int cod_examen, JLabel estadoEjercicio) {
 		contr=cont;
 		le = new ArrayList<Ejercicio>();
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -204,6 +205,7 @@ public class EjerciciosDesktop extends JFrame {
 					//llamar al controlador para que agregue el arraylist de ejercicios
 					contr.agregarEjercicios(ejercicios, cod_examen);
 					estadoEjercicio.setText("Ejercicios cargados");
+					estadoEjercicio.setForeground(Color.BLACK);
 					dispose();
 				  
 				} catch (Exception el) {

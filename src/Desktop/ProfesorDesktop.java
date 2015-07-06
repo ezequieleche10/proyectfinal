@@ -28,6 +28,7 @@ import javax.swing.JTextField;
 import javax.swing.JButton;
 
 import Negocio.Controlador;
+import Negocio.Opcion.eleccionMenu;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -50,6 +51,7 @@ public class ProfesorDesktop extends JFrame {
 	 * Create the frame.
 	 */
 	public ProfesorDesktop(Controlador cont) {
+	
 		setTitle("Profesores");
 		//al cancelar o cerrar con la x , solo se cierra el JFrame
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);

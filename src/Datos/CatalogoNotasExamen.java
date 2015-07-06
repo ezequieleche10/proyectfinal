@@ -24,7 +24,7 @@ public class CatalogoNotasExamen extends DBConexion_1 {
     {
         try 
         {    this.Conectar();
-            String cadenaC="SELECT * FROM alumno_en_examen INNER JOIN alumno ON alumno_en_examen.dni=alumno.dni WHERE cod_examen = ?";
+            String cadenaC="SELECT * FROM alumno_en_examen INNER JOIN alumno ON alumno_en_examen.dni=alumno.dni WHERE alumno_en_examen.cod_examen = ?";
             ArrayList<NotaExamenAlumno> notasExamenesAlumnos = new ArrayList<NotaExamenAlumno>();
             PreparedStatement consulta= Cone.prepareStatement(cadenaC);
             consulta.setInt(1, cod_examen);
@@ -33,7 +33,7 @@ public class CatalogoNotasExamen extends DBConexion_1 {
          
             while(resu.next())
                {
-                    float nota = resu.getFloat("nota");
+                    //float nota = resu.getFloat("nota");
                     String condicion = resu.getString("estado");
                     int dniAl = resu.getInt("dni" );
                     String nomAl = resu.getString("nombre");
@@ -41,14 +41,16 @@ public class CatalogoNotasExamen extends DBConexion_1 {
                     String mailAl = resu.getString("mail");
                     String tuelAl = resu.getString("turno_eleccion");
                     String indiAl = resu.getString("ingreso_directo");
-                    Alumno al = new Alumno(dniAl, nomAl, apeAl,  mailAl, tuelAl, indiAl);
-                    NotaExamenAlumno nea= new NotaExamenAlumno(nota,condicion,al);
+                    String nombreC= getNombreCarrera(resu.getInt("cod_carrera"));
+                    Alumno al = new Alumno(dniAl, nomAl, apeAl,  mailAl, tuelAl, indiAl,nombreC);
+                    NotaExamenAlumno nea= new NotaExamenAlumno(0,condicion,al);
+                
                     
                     notasExamenesAlumnos.add(nea); 
                     
                }
             this.Desconectar();
-            JOptionPane.showMessageDialog(null, "Se han cargado los alumnos al examen");
+            
             return notasExamenesAlumnos;
         }
         catch (Exception ex)
@@ -89,6 +91,12 @@ public class CatalogoNotasExamen extends DBConexion_1 {
                         
         }
     }
-    
+      private String getNombreCarrera(int int1) {
+    	  if(int1==1)
+    	  {
+    		return "Traductorado de ingles";
+    	  }
+    		else return "Profesorado de ingles";
+    	}
     
 }

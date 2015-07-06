@@ -50,17 +50,6 @@ public class Carrera {
     	return nombre;
     }
     
-    public Examen listarExamen(int anio) {
-        
-        try {
-            CatalogodeExamenes exData = new CatalogodeExamenes();
-            int cd = this.getCod_carrera();
-            return exData.listarExamen(cd, anio);
-        } catch (Exception ex) {
-            Logger.getLogger(Carrera.class.getName()).log(Level.SEVERE, null, ex);
-            return null;
-        }
-        
-    }
+    
     
 }

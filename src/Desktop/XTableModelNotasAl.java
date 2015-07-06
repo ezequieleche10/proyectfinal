@@ -22,13 +22,17 @@ ArrayList<AlumnoEnEjercicio> datasource;
 	
 	@Override
 	public boolean isCellEditable(int row, int column) {
-	    return true;
+		if (column < 5) {
+	            return false;
+	        } else {
+	       return true;
+	        }
 	}
 	
 	@Override
 	public int getColumnCount() {
 		// TODO Auto-generated method stub
-		return 5;
+		return 6;
 	}
 
 	@Override
@@ -39,30 +43,36 @@ ArrayList<AlumnoEnEjercicio> datasource;
 	
 	public void setValueAt(Object value, int row, int col) {
         
-		datasource.get(row);
+		//datasource.get(row);
 	
 		
 		switch (col) {
 		case 0:
-			datasource.get(row).getEjer().setNombre(value.toString());
 			break;
 		case 1:
-			datasource.get(row).getEjer().setCant_items(Integer.parseInt(value.toString()));
+			datasource.get(row).getEjer().setNombre(value.toString());
 			break;
 		case 2:
-			datasource.get(row).getEjer().setPorcentaje(Integer.parseInt(value.toString()));
-			break;
-		case 3:
-			datasource.get(row).setResultado(Integer.parseInt(value.toString()));
-			break;
-		case 4:
 			datasource.get(row).setNota_parcial(Float.parseFloat(value.toString()));
 			break;
+		case 3:
+			datasource.get(row).getEjer().setPorcentaje(Integer.parseInt(value.toString()));
+			break;
+		case 4:
+			datasource.get(row).getEjer().setCant_items(Integer.parseInt(value.toString()));
+			break;
+		case 5:
+			datasource.get(row).setResultado(Integer.parseInt(value.toString()));
+			break;
+		
 		default:
 		
 			break;
 		}
-        fireTableCellUpdated(row, col);
+		float valor= datasource.get(row).getResultado()*datasource.get(row).getEjer().getPorcentaje()/(datasource.get(row).getEjer().getCant_items()*10);
+		datasource.get(row).setNota_parcial(valor);
+      //  fireTableCellUpdated(row, col);
+        fireTableRowsUpdated(0, datasource.size());
     }
 	
 	@Override
@@ -71,20 +81,24 @@ ArrayList<AlumnoEnEjercicio> datasource;
 		Object o;
 		switch (arg1) {
 		case 0:
-			o=alej.getEjer().getNombre();
+			o=alej.getEjer().getCod_ejercicio();
 			break;
 		case 1:
-			o=alej.getEjer().getCant_items();
+			o=alej.getEjer().getNombre();
 			break;
 		case 2:
-			o=alej.getEjer().getPorcentaje();
-			break;
-		case 3:
-			o=alej.getResultado();
-			break;
-		case 4:
 			o=alej.getNota_parcial();
 			break;
+		case 3:
+			o=alej.getEjer().getPorcentaje();
+			break;
+		case 4:
+			o=alej.getEjer().getCant_items();
+			break;
+		case 5:
+			o=alej.getResultado();
+			break;
+		
 		default:
 			o=null;
 			break;
@@ -95,20 +109,23 @@ ArrayList<AlumnoEnEjercicio> datasource;
 	{
 		String nom="";
 		switch (column) {
-		case 0:
-			nom="Nombre Ejercicio";
+		case 0: 
+			nom="Cod_ejercicio";
 			break;
 		case 1:
-			nom="Items Totales";
+			nom="Nombre Ejercicio";
 			break;
 		case 2:
-			nom="Peso Ejercicio";
+			nom="Nota parcial";
 			break;
 		case 3:
-			nom="Items Correctos";
-			break;	
+			nom="Peso Ejercicio";
+			break;
 		case 4:
-			nom="Nota Parcial";
+			nom="Items Totales";
+			break;	
+		case 5:
+			nom="Items correctos";
 			break;
 		
 		default:

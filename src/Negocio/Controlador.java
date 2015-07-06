@@ -4,6 +4,7 @@
  * and open the template in the editor.
  */
 package Negocio;
+import Datos.CatalogoNotasExamen;
 import Datos.CatalogodeAlumnos;
 import Datos.CatalogodeComisiones;
 import Datos.CatalogodeEjercicios;
@@ -15,6 +16,7 @@ import Entidades.Carrera;
 import Entidades.Comision;
 import Entidades.Ejercicio;
 import Entidades.Examen;
+import Entidades.NotaExamenAlumno;
 import Entidades.Profesor;
 import Entidades.Usuario;
 import Datos.CatalogodeCarreras;
@@ -22,6 +24,8 @@ import Datos.CatalogodeExamenes;
 
 import java.awt.Component;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.swing.JOptionPane;
 
@@ -38,6 +42,7 @@ public class Controlador {
     private CatalogodeComisiones cdco;
     private CatalogodeEjercicios cdej;
     private CatalogodeUsuarios cdeu;
+    private CatalogoNotasExamen cne;
     public Controlador() {
         cde = new CatalogodeExamenes();
         cdc = new CatalogodeCarreras();
@@ -46,6 +51,7 @@ public class Controlador {
         cdco = new CatalogodeComisiones();
         cdej = new CatalogodeEjercicios();
         cdeu=new CatalogodeUsuarios();
+        cne=new CatalogoNotasExamen();
         }
     
      public ArrayList<Carrera> buscarCarreras() throws Exception{
@@ -57,12 +63,16 @@ public class Controlador {
      }
     
     
-    public Examen mostrarExamenPendiente(int anio, int cod_carrera) {
-        Carrera c= new Carrera(cod_carrera);
-      
-        Examen examen = new Examen();
-        examen = c.listarExamen(anio);
-        return examen;
+    public Examen mostrarExamenPendiente(int anio) {
+    	
+              try {
+				return cde.listarExamen(anio);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				return null;
+			}
+       
         
     }
     
@@ -91,7 +101,8 @@ public class Controlador {
             }
             //devuelve los alumnos que han aprobado el examen anterior
             alumnos = examenV.obtenerAlumnos();
-            ex.agregarAlumnos(alumnos);
+           //agregar alumnos no lo hace todavia, cuando se procesa solamente
+           // ex.agregarAlumnos(alumnos);
             
             
          }
@@ -111,7 +122,7 @@ public class Controlador {
     public Comision buscarExamen (int anio, int cod_carrera) throws Exception {
         
         Examen ex = new Examen();
-        ex = cde.listarExamen(cod_carrera, anio);
+        ex = cde.listarExamen(anio);
         //resolver tema nombre y descripcion
         Comision c = new Comision(0, "", "", ex);
         return c;
@@ -169,10 +180,10 @@ public class Controlador {
         
     }
     
-    public void agregarExamen (String tipo_examen, int cod_carrera, int año, String descripcion) throws Exception
+    public void agregarExamen (String tipo_examen, int año, String descripcion) throws Exception
     {
     	Examen ex= new Examen(tipo_examen,año,"sin generar",descripcion);
-    	cde.agregarExamen(ex, cod_carrera);
+    	cde.agregarExamen(ex);
     }
     public void agregarProfesor(String nombre, String apellido, String fecha_Nacimiento, String usu, String password) throws Exception
     {
@@ -233,7 +244,63 @@ public class Controlador {
 
 	public ArrayList<AlumnoEnEjercicio> getAlumnosenEjercicio(int cod, Alumno al) {
 		// TODO Auto-generated method stub
-		return cdej.getAlumnosenEjercicio(cod,al);
+		return cdej.getAlumnosenEjercicio(cod, al);
+	}
+
+	public void agregarNotasEnEjercicios(ArrayList<AlumnoEnEjercicio> alen, int cod) {
+		float nota=0;
+		for(int i=0;i<alen.size();++i){
+			nota+=alen.get(i).getNota_parcial();
+		}
+		cdej.agregarNotasEnEjercicio(alen,nota,cod);
+		
+	}
+
+	public ArrayList<NotaExamenAlumno> getNotasExamen(int cod_examen) {
+		ArrayList<NotaExamenAlumno> nea= new ArrayList<NotaExamenAlumno>();
+		try {
+			nea=cne.listarNotaExamenAlumno(cod_examen);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		if(nea!=null){
+			ArrayList<AlumnoEnEjercicio> alen= new ArrayList<AlumnoEnEjercicio>();
+			alen=cdej.getAlumnosEnEjercicios(cod_examen);
+			for(int i=0; i<nea.size();i++)
+			{
+				for(int j=0; j<alen.size();j++)
+				{
+					if(alen.get(j).getAlumno().getDni()==nea.get(i).getAlumno().getDni())
+					{
+					//	JOptionPane.showMessageDialog(null, nea.get(i).getNota() );
+						//JOptionPane.showMessageDialog(null, alen.get(j).getNota_parcial());
+						nea.get(i).setNota((nea.get(i).getNota() + alen.get(j).getNota_parcial()));
+					}
+				
+				}
+			}
+			return nea;
+		}
+		else
+		{
+			return null;
+		}
+	}
+
+	public Examen buscarExamen(String tipoEx, int anio) {
+		
+		try {
+			return cde.buscarExamen(tipoEx, anio);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return null;
+		}
+	}
+
+	public void actualizarNotasExamen(Examen exa) {
+		cde.actualizarNotas(exa);
 	}
 	
     
