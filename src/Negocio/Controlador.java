@@ -101,6 +101,7 @@ public class Controlador {
             }
             //devuelve los alumnos que han aprobado el examen anterior
             alumnos = examenV.obtenerAlumnos();
+           
            //agregar alumnos no lo hace todavia, cuando se procesa solamente
            // ex.agregarAlumnos(alumnos);
             
@@ -260,6 +261,9 @@ public class Controlador {
 		ArrayList<NotaExamenAlumno> nea= new ArrayList<NotaExamenAlumno>();
 		try {
 			nea=cne.listarNotaExamenAlumno(cod_examen);
+			for(int i=0;i<nea.size();i++){
+				nea.get(i).setNota(0);
+			}
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

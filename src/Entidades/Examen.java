@@ -15,6 +15,8 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author Lucia
@@ -149,6 +151,7 @@ public Examen(){
            for(int i=0;i<listaEA.size();i++)
            {
                float nota = listaEA.get(i).getNota();
+              
                if (nota>=6)
                {
                    alAprob.add(listaEA.get(i).getAlumno());

@@ -24,6 +24,7 @@ public class CatalogoNotasExamen extends DBConexion_1 {
     {
         try 
         {    this.Conectar();
+        	
             String cadenaC="SELECT * FROM alumno_en_examen INNER JOIN alumno ON alumno_en_examen.dni=alumno.dni WHERE alumno_en_examen.cod_examen = ?";
             ArrayList<NotaExamenAlumno> notasExamenesAlumnos = new ArrayList<NotaExamenAlumno>();
             PreparedStatement consulta= Cone.prepareStatement(cadenaC);
@@ -33,7 +34,7 @@ public class CatalogoNotasExamen extends DBConexion_1 {
          
             while(resu.next())
                {
-                    //float nota = resu.getFloat("nota");
+                    float nota = resu.getFloat("nota");
                     String condicion = resu.getString("estado");
                     int dniAl = resu.getInt("dni" );
                     String nomAl = resu.getString("nombre");
@@ -43,7 +44,7 @@ public class CatalogoNotasExamen extends DBConexion_1 {
                     String indiAl = resu.getString("ingreso_directo");
                     String nombreC= getNombreCarrera(resu.getInt("cod_carrera"));
                     Alumno al = new Alumno(dniAl, nomAl, apeAl,  mailAl, tuelAl, indiAl,nombreC);
-                    NotaExamenAlumno nea= new NotaExamenAlumno(0,condicion,al);
+                    NotaExamenAlumno nea= new NotaExamenAlumno(nota,condicion,al);
                 
                     
                     notasExamenesAlumnos.add(nea); 
